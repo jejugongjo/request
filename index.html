@@ -1544,12 +1544,22 @@
       const firstCard = contentContainer.querySelector(".content-card");
       if (!firstCard) return;
 
+      const nextNum = contentContainer.querySelectorAll(".content-card").length + 1;
       const clone = firstCard.cloneNode(true);
+      clone.dataset.index = nextNum;
+
+      // DOM에 추가하기 전에 먼저 radio/input의 name을 새 번호로 분리하여 기존 카드 선택값이 풀리지 않도록 보호
+      clone.querySelectorAll("[data-field]").forEach((el) => {
+        el.name = `c${nextNum}_${el.dataset.field}`;
+      });
+
       clone.querySelectorAll("input, textarea, select").forEach((el) => {
         if (el.type === "checkbox" || el.type === "radio") {
           el.checked = false;
+          el.removeAttribute("checked");
         } else {
           el.value = "";
+          el.removeAttribute("value");
         }
       });
 
@@ -1571,46 +1581,228 @@
       }
     }
 
-    // 1. 현재 폼에 입력된 모든 데이터를 직렬화하여 '원본 폼 복원용 URL(?view=1&d=...)' 생성
-    function serializeFormState() {
-      const state = {};
-      state._contentCount = contentContainer.querySelectorAll(".content-card").length;
+    // 1. 원본 폼 복원용 초경량 URL 직렬화/압축 설정 (Error: URI Too Long 완벽 방지)
+    const TOP_FIELDS = [
+      "organization",
+      "projectName",
+      "managerName",
+      "phone",
+      "email",
+      "shootDate",
+      "shootLocation",
+      "shootDuration",
+      "deadline",
+      "budget",
+      "rawData",
+      "toneAndManner",
+      "reference",
+      "eventType",
+      "targetAudience",
+      "providedAssets",
+      "sourceLink",
+      "portraitRight",
+      "additionalNotes"
+    ];
+
+    const CARD_FIELDS = [
+      "title",
+      "prodType",
+      "deliverable",
+      "shortformCount",
+      "longformCount",
+      "photoCount",
+      "aspectRatio",
+      "direction",
+      "keyMessage",
+      "usage"
+    ];
+
+    function bytesToBase64Url(bytes) {
+      let binary = "";
+      for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+
+    function base64UrlToBytes(b64url) {
+      let b64 = b64url.replace(/-/g, "+").replace(/_/g, "/");
+      while (b64.length % 4 !== 0) {
+        b64 += "=";
+      }
+      const binary = atob(b64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      return bytes;
+    }
+
+    function utf8ToBase64Url(str) {
+      return bytesToBase64Url(new TextEncoder().encode(str));
+    }
+
+    function base64UrlToUtf8(b64url) {
+      return new TextDecoder().decode(base64UrlToBytes(b64url));
+    }
+
+    async function compressStringToParam(str) {
+      if (typeof CompressionStream !== "undefined") {
+        try {
+          const inputBytes = new TextEncoder().encode(str);
+          const cs = new CompressionStream("deflate-raw");
+          const writer = cs.writable.getWriter();
+          writer.write(inputBytes);
+          writer.close();
+          const compressedBuf = await new Response(cs.readable).arrayBuffer();
+          return "z." + bytesToBase64Url(new Uint8Array(compressedBuf));
+        } catch (e) {
+          console.warn("Deflate 압축 폴백:", e);
+        }
+      }
+      return "c." + utf8ToBase64Url(str);
+    }
+
+    async function decompressParamToString(param) {
+      if (param.startsWith("z.") && typeof DecompressionStream !== "undefined") {
+        const compressedBytes = base64UrlToBytes(param.slice(2));
+        const ds = new DecompressionStream("deflate-raw");
+        const writer = ds.writable.getWriter();
+        writer.write(compressedBytes);
+        writer.close();
+        const decompressedBuf = await new Response(ds.readable).arrayBuffer();
+        return new TextDecoder().decode(new Uint8Array(decompressedBuf));
+      }
+      if (param.startsWith("c.")) {
+        return base64UrlToUtf8(param.slice(2));
+      }
+      // 구버전(btoa + encodeURIComponent) 호환
+      return decodeURIComponent(atob(param));
+    }
+
+    function trimTrailingEmpty(arr) {
+      const copy = arr.slice();
+      while (copy.length > 0 && (copy[copy.length - 1] === "" || copy[copy.length - 1] === null)) {
+        copy.pop();
+      }
+      return copy;
+    }
+
+    function buildCompactFormPayload() {
+      const topVals = TOP_FIELDS.map((name) => {
+        const els = form.querySelectorAll(`[name="${name}"]`);
+        if (!els || els.length === 0) return "";
+        const first = els[0];
+        if (first.type === "checkbox") {
+          return Array.from(els)
+            .filter((el) => el.checked)
+            .map((el) => el.value)
+            .join("|");
+        }
+        if (first.type === "radio") {
+          const checked = Array.from(els).find((el) => el.checked);
+          return checked ? checked.value : "";
+        }
+        return first.value ? first.value.trim() : "";
+      });
+
+      const cards = contentContainer.querySelectorAll(".content-card");
+      const cardValsList = Array.from(cards).map((card) => {
+        const vals = CARD_FIELDS.map((fieldKey) => {
+          const els = card.querySelectorAll(`[data-field="${fieldKey}"]`);
+          if (!els || els.length === 0) return "";
+          const first = els[0];
+          if (first.type === "checkbox") {
+            return Array.from(els)
+              .filter((el) => el.checked)
+              .map((el) => el.value)
+              .join("|");
+          }
+          if (first.type === "radio") {
+            const checked = Array.from(els).find((el) => el.checked);
+            return checked ? checked.value : "";
+          }
+          return first.value ? first.value.trim() : "";
+        });
+        return trimTrailingEmpty(vals);
+      });
+
+      let attachedNames = [];
       if (selectedSourceFiles.length > 0) {
-        state._attachedFileNames = selectedSourceFiles.map((f) => `${f.name} (${formatBytes(f.size)})`);
+        attachedNames = selectedSourceFiles.map((f) => `${f.name} (${formatBytes(f.size)})`);
       } else if (restoredAttachedFileNames.length > 0) {
-        state._attachedFileNames = restoredAttachedFileNames;
+        attachedNames = restoredAttachedFileNames;
       }
 
-      const elements = form.querySelectorAll("input, select, textarea");
-      elements.forEach((el) => {
-        if (!el.name || el.type === "file") return;
-        if (el.type === "checkbox") {
-          if (!state[el.name]) state[el.name] = [];
-          if (el.checked) state[el.name].push(el.value);
-        } else if (el.type === "radio") {
-          if (el.checked) state[el.name] = el.value;
+      return [
+        2,
+        new Date().toLocaleString("ko-KR"),
+        trimTrailingEmpty(topVals),
+        cardValsList,
+        attachedNames
+      ];
+    }
+
+    function expandCompactPayloadToState(compactArr) {
+      const [, submittedAt, topVals = [], cardValsList = [], attachedNames = []] = compactArr;
+      const state = {
+        _submittedAt: submittedAt || "",
+        _contentCount: Math.max(1, cardValsList.length),
+        _attachedFileNames: attachedNames || []
+      };
+
+      const checkboxTopFields = new Set(["eventType", "targetAudience", "providedAssets"]);
+      TOP_FIELDS.forEach((name, idx) => {
+        const raw = topVals[idx] || "";
+        if (!raw) return;
+        if (checkboxTopFields.has(name)) {
+          state[name] = raw.split("|").filter(Boolean);
         } else {
-          if (el.value) state[el.name] = el.value;
+          state[name] = raw;
         }
       });
-      state._submittedAt = new Date().toLocaleString("ko-KR");
-      const jsonStr = JSON.stringify(state);
-      const encoded = btoa(encodeURIComponent(jsonStr));
-      const baseUrl = window.location.href.split("?")[0];
+
+      const checkboxCardFields = new Set(["deliverable", "aspectRatio"]);
+      cardValsList.forEach((cardVals, cIdx) => {
+        const num = cIdx + 1;
+        CARD_FIELDS.forEach((fieldKey, fIdx) => {
+          const raw = (cardVals && cardVals[fIdx]) || "";
+          if (!raw) return;
+          const fullKey = `c${num}_${fieldKey}`;
+          if (checkboxCardFields.has(fieldKey)) {
+            state[fullKey] = raw.split("|").filter(Boolean);
+          } else {
+            state[fullKey] = raw;
+          }
+        });
+      });
+
+      return state;
+    }
+
+    async function serializeFormState() {
+      const compactPayload = buildCompactFormPayload();
+      const jsonStr = JSON.stringify(compactPayload);
+      const encoded = await compressStringToParam(jsonStr);
+      const baseUrl = window.location.href.split("?")[0].split("#")[0];
       return `${baseUrl}?view=1&d=${encoded}`;
     }
 
     // 2. 메일의 [작성된 원본 폼 열기] 링크(?view=1&d=...)로 접속했을 때만 원본 복원 및 운영자 전용 버튼 활성화
-    function applyEncodedState(inputStr) {
+    async function applyEncodedState(inputStr) {
       if (!inputStr) return false;
       let encoded = inputStr.trim();
       if (encoded.includes("d=")) {
-        encoded = encoded.split("d=")[1].split("&")[0];
+        encoded = encoded.split("d=")[1].split("&")[0].split("#")[0];
       }
 
       try {
-        const jsonStr = decodeURIComponent(atob(encoded));
-        const state = JSON.parse(jsonStr);
+        const jsonStr = await decompressParamToString(encoded);
+        const parsed = JSON.parse(jsonStr);
+        const state =
+          Array.isArray(parsed) && parsed[0] === 2
+            ? expandCompactPayloadToState(parsed)
+            : parsed;
 
         // 이전 버전 링크 호환 처리
         if (!("c1_prodType" in state) && "prodType" in state) {
@@ -1680,7 +1872,11 @@
 
     function restoreFormFromUrl() {
       const params = new URLSearchParams(window.location.search);
-      const encoded = params.get("d");
+      let encoded = params.get("d");
+      if (!encoded && window.location.hash && window.location.hash.includes("d=")) {
+        const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+        encoded = hashParams.get("d");
+      }
       if (encoded) {
         applyEncodedState(encoded);
       }
@@ -1715,8 +1911,8 @@
     }
 
     // 3. 원본 열람 링크 클립보드 복사
-    function copyShareableFormUrl() {
-      const shareUrl = serializeFormState();
+    async function copyShareableFormUrl() {
+      const shareUrl = await serializeFormState();
       navigator.clipboard.writeText(shareUrl).then(() => {
         showStatusModal(
           "🔗 작성본 원본 링크가 복사되었습니다!",
@@ -1725,7 +1921,7 @@
       });
     }
 
-    // 4. 사람이 읽기 쉬운 한글 요약 데이터 추출 (이메일 & 구글 시트용)
+    // 4. 사람이 읽기 쉬운 한글 요약 데이터 추출 (이메일 & 구글 시트 신/구버전 완벽 호환)
     function collectReadableSummary(shareUrl, attachments = []) {
       const getCheckedTexts = (name) => {
         return Array.from(form.querySelectorAll(`input[name="${name}"]:checked`))
@@ -1741,41 +1937,53 @@
         return sel && sel.selectedIndex > 0 ? sel.options[sel.selectedIndex].text : "-";
       };
 
-      // 복수 의뢰 콘텐츠 카드 요약 생성
-      const cards = contentContainer.querySelectorAll(".content-card");
-      const contentSummaries = Array.from(cards).map((card, idx) => {
-        const n = idx + 1;
-        const title = getVal(`c${n}_title`);
-        const headerTitle = title !== "-" ? `[콘텐츠 #${n} : ${title}]` : `[콘텐츠 #${n}]`;
+      // 각 콘텐츠 카드 내부에서 직접 data-field 기준으로 값을 추출 (복수 추가 시 누락 원천 차단)
+      const getCardVal = (card, fieldKey) => {
+        const el = card.querySelector(`[data-field="${fieldKey}"]`);
+        return el && el.value ? el.value.trim() : "-";
+      };
+      const getCardCheckedTexts = (card, fieldKey) => {
+        return Array.from(card.querySelectorAll(`input[data-field="${fieldKey}"]:checked`))
+          .map((input) => input.parentElement.innerText.trim())
+          .join(", ") || "-";
+      };
 
-        const prodType = getCheckedTexts(`c${n}_prodType`);
+      const cards = contentContainer.querySelectorAll(".content-card");
+      const isMulti = cards.length > 1;
+
+      const cardDetails = Array.from(cards).map((card, idx) => {
+        const n = idx + 1;
+        const title = getCardVal(card, "title");
+        const headerTitle = title !== "-" ? `[콘텐츠 #${n} : ${title}]` : `[콘텐츠 #${n}]`;
+        const prodType = getCardCheckedTexts(card, "prodType");
+
+        const sf = getCardVal(card, "shortformCount");
+        const lf = getCardVal(card, "longformCount");
+        const ph = getCardVal(card, "photoCount");
 
         const delivParts = [];
-        const checkedDelivs = Array.from(form.querySelectorAll(`input[name="c${n}_deliverable"]:checked`));
+        const checkedDelivs = Array.from(card.querySelectorAll(`input[data-field="deliverable"]:checked`));
         checkedDelivs.forEach((chk) => {
           const labelText = chk.parentElement.innerText.trim();
-          let countText = "";
-          if (chk.value === "shortform") countText = getVal(`c${n}_shortformCount`);
-          if (chk.value === "longform") countText = getVal(`c${n}_longformCount`);
-          if (chk.value === "photo_snap") countText = getVal(`c${n}_photoCount`);
+          let countText = "-";
+          if (chk.value === "shortform") countText = sf;
+          if (chk.value === "longform") countText = lf;
+          if (chk.value === "photo_snap") countText = ph;
           delivParts.push(countText !== "-" ? `${labelText} (${countText})` : labelText);
         });
         if (delivParts.length === 0) {
-          const sf = getVal(`c${n}_shortformCount`);
-          const lf = getVal(`c${n}_longformCount`);
-          const ph = getVal(`c${n}_photoCount`);
           if (sf !== "-") delivParts.push(`숏폼 (${sf})`);
           if (lf !== "-") delivParts.push(`롱폼 (${lf})`);
           if (ph !== "-") delivParts.push(`사진 (${ph})`);
         }
         const deliverableStr = delivParts.join(" / ") || "-";
 
-        const ratio = getCheckedTexts(`c${n}_aspectRatio`);
-        const direction = getVal(`c${n}_direction`);
-        const keyMsg = getVal(`c${n}_keyMessage`);
-        const usage = getVal(`c${n}_usage`);
+        const ratio = getCardCheckedTexts(card, "aspectRatio");
+        const direction = getCardVal(card, "direction");
+        const keyMsg = getCardVal(card, "keyMessage");
+        const usage = getCardVal(card, "usage");
 
-        return [
+        const fullBlock = [
           headerTitle,
           `  • 제작 구분: ${prodType}`,
           `  • 결과물 형태/분량: ${deliverableStr}`,
@@ -1784,7 +1992,45 @@
           `  • 핵심 내용: ${keyMsg}`,
           `  • 활용처: ${usage}`
         ].join("\n");
+
+        return {
+          n,
+          title,
+          headerTitle,
+          prodType,
+          sf,
+          lf,
+          ph,
+          deliverableStr,
+          ratio,
+          direction,
+          keyMsg,
+          usage,
+          fullBlock
+        };
       });
+
+      const contentSummaries = cardDetails.map((c) => c.fullBlock);
+
+      // 기존 구글 시트/앱스 스크립트 컬럼(3_제작형태 ~ 4_핵심메시지)을 그대로 쓰는 경우에도 복수 콘텐츠가 모두 기록되도록 통합 문자열 생성
+      const formatPerCard = (getter) => {
+        return cardDetails
+          .map((c) => (isMulti || c.title !== "-" ? `${c.headerTitle} ${getter(c)}` : getter(c)))
+          .join("\n");
+      };
+
+      const legacyProdType = formatPerCard((c) => c.prodType);
+      const legacyDeliverable = formatPerCard((c) => c.deliverableStr);
+      const legacyShortform = formatPerCard((c) => c.sf);
+      const legacyLongform = formatPerCard((c) => c.lf);
+      const legacyPhoto = formatPerCard((c) => c.ph);
+      const legacyRatio = formatPerCard((c) => c.ratio);
+      const legacyConceptAndKeyMsg = cardDetails
+        .map(
+          (c) =>
+            `${c.headerTitle}\n• 제작 방향: ${c.direction}\n• 핵심 내용: ${c.keyMsg}\n• 활용처: ${c.usage}`
+        )
+        .join("\n\n");
 
       const attachedNamesStr =
         attachments.length > 0
@@ -1801,6 +2047,11 @@
         .filter(Boolean)
         .join(" | ");
 
+      const toneVal = getCheckedTexts("toneAndManner");
+      const refVal = getVal("reference");
+      const eventVal = getCheckedTexts("eventType");
+      const targetVal = getCheckedTexts("targetAudience");
+
       return {
         "_subject": `[제작의뢰서] ${getVal("organization")} - ${getVal("projectName")} (총 ${cards.length}건)`,
         "제출일시": new Date().toLocaleString("ko-KR"),
@@ -1814,13 +2065,27 @@
         "2_예상촬영시간": getCheckedTexts("shootDuration"),
         "2_희망납품일": getVal("deadline"),
         "2_예산범위": getSelectText("budget"),
+        // 신규 통합 컬럼 (콘텐츠 수량 + 상세내역)
         "3_의뢰콘텐츠_수량": `총 ${cards.length}건`,
         "3_의뢰콘텐츠_상세내역": "\n" + contentSummaries.join("\n\n"),
+        // 기존 구글 시트/스크립트 호환용 컬럼 (복수 콘텐츠 전체 내역 자동 병합)
+        "3_제작형태": legacyProdType,
+        "3_결과물_종류": legacyDeliverable,
+        "3_숏폼편수": legacyShortform,
+        "3_롱폼분량": legacyLongform,
+        "3_사진장수": legacyPhoto,
+        "3_화면비율": legacyRatio,
         "4_원본데이터필요여부": getCheckedTexts("rawData"),
-        "5_영상톤앤매너": getCheckedTexts("toneAndManner"),
-        "5_참고레퍼런스": getVal("reference"),
-        "6_행사성격": getCheckedTexts("eventType"),
-        "6_타겟시청자": getCheckedTexts("targetAudience"),
+        "4_핵심메시지": legacyConceptAndKeyMsg,
+        // 5번 & 6번 순서 변경 전/후 컬럼명 모두 호환
+        "5_영상톤앤매너": toneVal,
+        "5_참고레퍼런스": refVal,
+        "6_행사성격": eventVal,
+        "6_타겟시청자": targetVal,
+        "5_행사성격": eventVal,
+        "5_타겟시청자": targetVal,
+        "6_참고레퍼런스": refVal,
+        "6_영상톤앤매너": toneVal,
         "7_제공가능소스": combinedSourceSummary,
         "7_첨부파일목록": attachedNamesStr,
         "7_소스공유링크": sourceLinkStr,
@@ -1855,7 +2120,7 @@
 
       try {
         const attachments = await readFilesAsBase64(selectedSourceFiles);
-        const shareUrl = serializeFormState();
+        const shareUrl = await serializeFormState();
         payload = collectReadableSummary(shareUrl, attachments);
 
         if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.startsWith("https://")) {
@@ -1885,10 +2150,31 @@
         );
       } else if (payload) {
         // 오프라인/로컬 보안 차단 시 기본 메일 클라이언트로 즉시 발송 폴백
-        const bodyLines = Object.entries(payload)
-          .filter(([k]) => !k.startsWith("_"))
-          .map(([k, v]) => `• ${k}: ${v}`)
-          .join("\n");
+        const mailKeys = [
+          "제출일시",
+          "1_의뢰기관명",
+          "1_프로젝트명",
+          "1_담당자",
+          "1_연락처",
+          "1_이메일",
+          "2_촬영일시",
+          "2_촬영장소",
+          "2_예상촬영시간",
+          "2_희망납품일",
+          "2_예산범위",
+          "3_의뢰콘텐츠_수량",
+          "3_의뢰콘텐츠_상세내역",
+          "4_원본데이터필요여부",
+          "5_영상톤앤매너",
+          "5_참고레퍼런스",
+          "6_행사성격",
+          "6_타겟시청자",
+          "7_제공가능소스",
+          "7_초상권동의여부",
+          "7_기타요청사항",
+          "원본폼_열람_및_PDF저장_링크"
+        ];
+        const bodyLines = mailKeys.map((k) => `• ${k}: ${payload[k] || "-"}`).join("\n");
         const mailtoUrl = `mailto:${COMPANY_EMAIL}?subject=${encodeURIComponent(payload._subject)}&body=${encodeURIComponent(bodyLines)}`;
         window.location.href = mailtoUrl;
         showStatusModal(
