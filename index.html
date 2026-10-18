@@ -890,6 +890,76 @@
       .page-footer {
         break-inside: avoid;
       }
+      .table-pdf-doc {
+        max-width: 100% !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        border: 1px solid #CEC9C0 !important;
+      }
+      .table-pdf-doc tr {
+        break-inside: avoid;
+      }
+    }
+
+    /* Table Document View Mode (Opened when clicking [PDF 저장하기] in email) */
+    .table-pdf-doc {
+      display: none;
+      max-width: 780px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 36px rgba(34, 30, 83, 0.08);
+    }
+    .table-pdf-doc.active {
+      display: block;
+    }
+    .table-pdf-header {
+      background: var(--brand-navy);
+      color: #FFFFFF;
+      padding: 28px 32px;
+    }
+    .table-pdf-tag {
+      color: var(--brand-amber);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    .table-pdf-header h2 {
+      margin: 0;
+      font-size: 21px;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.4;
+    }
+    .table-pdf-body {
+      padding: 28px 32px 34px;
+      background: #FFFFFF;
+    }
+    .table-pdf-grid {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      border-top: 2px solid var(--brand-navy);
+    }
+    .table-pdf-grid th {
+      text-align: left;
+      vertical-align: top;
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-warm);
+      color: var(--brand-navy);
+      width: 28%;
+      font-weight: 700;
+    }
+    .table-pdf-grid td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-body);
+      white-space: pre-line;
+      line-height: 1.65;
     }
   </style>
 </head>
@@ -906,7 +976,26 @@
     </div>
   </div>
 
-  <div class="container">
+  <!-- Table Summary PDF Document Container (Shown only when ?mode=table is opened from email [PDF 저장하기]) -->
+  <div id="tablePdfDocContainer" class="table-pdf-doc">
+    <div class="brand-bar">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="table-pdf-header">
+      <div class="table-pdf-tag">NEW PRODUCTION REQUEST</div>
+      <h2 id="tablePdfTitle">[제작의뢰서]</h2>
+    </div>
+    <div class="table-pdf-body">
+      <table class="table-pdf-grid">
+        <tbody id="tablePdfTbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container" id="mainFormContainer">
     <!-- Top Brand Palette Strip -->
     <div class="brand-bar">
       <span></span>
@@ -1646,35 +1735,22 @@
       return new TextDecoder().decode(base64UrlToBytes(b64url));
     }
 
-    async function compressStringToParam(str) {
-      if (typeof CompressionStream !== "undefined") {
-        try {
-          const inputBytes = new TextEncoder().encode(str);
-          const cs = new CompressionStream("deflate-raw");
-          const writer = cs.writable.getWriter();
-          writer.write(inputBytes);
-          writer.close();
-          const compressedBuf = await new Response(cs.readable).arrayBuffer();
-          return "z." + bytesToBase64Url(new Uint8Array(compressedBuf));
-        } catch (e) {
-          console.warn("Deflate 압축 폴백:", e);
-        }
-      }
+    function compressStringToParam(str) {
       return "c." + utf8ToBase64Url(str);
     }
 
     async function decompressParamToString(param) {
+      if (param.startsWith("c.")) {
+        return base64UrlToUtf8(param.slice(2));
+      }
       if (param.startsWith("z.") && typeof DecompressionStream !== "undefined") {
         const compressedBytes = base64UrlToBytes(param.slice(2));
         const ds = new DecompressionStream("deflate-raw");
         const writer = ds.writable.getWriter();
-        writer.write(compressedBytes);
-        writer.close();
+        await writer.write(compressedBytes);
+        await writer.close();
         const decompressedBuf = await new Response(ds.readable).arrayBuffer();
         return new TextDecoder().decode(new Uint8Array(decompressedBuf));
-      }
-      if (param.startsWith("c.")) {
-        return base64UrlToUtf8(param.slice(2));
       }
       // 구버전(btoa + encodeURIComponent) 호환
       return decodeURIComponent(atob(param));
@@ -1783,13 +1859,70 @@
     async function serializeFormState() {
       const compactPayload = buildCompactFormPayload();
       const jsonStr = JSON.stringify(compactPayload);
-      const encoded = await compressStringToParam(jsonStr);
+      const encoded = compressStringToParam(jsonStr);
       const baseUrl = window.location.href.split("?")[0].split("#")[0];
       return `${baseUrl}?view=1&d=${encoded}`;
     }
 
-    // 2. 메일의 [작성된 원본 폼 열기] 링크(?view=1&d=...)로 접속했을 때만 원본 복원 및 운영자 전용 버튼 활성화
-    async function applyEncodedState(inputStr) {
+    const TABLE_SUMMARY_KEYS = [
+      "제출일시",
+      "1_의뢰기관명",
+      "1_프로젝트명",
+      "1_담당자",
+      "1_연락처",
+      "1_이메일",
+      "2_촬영일시",
+      "2_촬영장소",
+      "2_예상촬영시간",
+      "2_희망납품일",
+      "2_예산범위",
+      "3_의뢰콘텐츠_수량",
+      "3_의뢰콘텐츠_상세내역",
+      "4_원본데이터필요여부",
+      "5_영상톤앤매너",
+      "5_참고레퍼런스",
+      "6_행사성격",
+      "6_타겟시청자",
+      "7_제공가능소스",
+      "7_첨부파일목록",
+      "7_소스공유링크",
+      "7_초상권동의여부",
+      "7_기타요청사항"
+    ];
+
+    function escapeHtml(str) {
+      return String(str || "-")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function renderTablePdfDocument(state) {
+      const summary = collectReadableSummary("");
+      if (state && state._submittedAt) {
+        summary["제출일시"] = state._submittedAt;
+      }
+
+      const titleEl = document.getElementById("tablePdfTitle");
+      const tbodyEl = document.getElementById("tablePdfTbody");
+      if (titleEl) {
+        titleEl.textContent = summary["_subject"] || `[문화놀이터 공조] 신규 제작 의뢰서 접수`;
+      }
+      if (tbodyEl) {
+        tbodyEl.innerHTML = TABLE_SUMMARY_KEYS.map(
+          (key) => `
+          <tr>
+            <th>${escapeHtml(key)}</th>
+            <td>${escapeHtml(summary[key] || "-")}</td>
+          </tr>
+        `
+        ).join("");
+      }
+    }
+
+    // 2. 메일의 [원본 폼 확인](?view=1&d=...) 또는 [PDF 저장하기](?view=1&mode=table&d=...) 접속 처리
+    async function applyEncodedState(inputStr, isTableMode = false) {
       if (!inputStr) return false;
       let encoded = inputStr.trim();
       if (encoded.includes("d=")) {
@@ -1850,6 +1983,9 @@
         const subEl = document.getElementById("adminViewSub");
         const clientSubmitArea = document.getElementById("clientSubmitArea");
         const adminBottomActions = document.getElementById("adminBottomActions");
+        const mainFormContainer = document.getElementById("mainFormContainer");
+        const tablePdfDocContainer = document.getElementById("tablePdfDocContainer");
+        const toggleBtn = document.getElementById("toggleEditBtn");
 
         bar.classList.add("active");
         if (clientSubmitArea) clientSubmitArea.style.display = "none";
@@ -1858,6 +1994,22 @@
         const org = state.organization || "의뢰처";
         const proj = state.projectName || "프로젝트";
         const time = state._submittedAt || "";
+
+        if (isTableMode) {
+          renderTablePdfDocument(state);
+          if (mainFormContainer) mainFormContainer.style.display = "none";
+          if (tablePdfDocContainer) tablePdfDocContainer.classList.add("active");
+          if (toggleBtn) toggleBtn.style.display = "none";
+          titleEl.textContent = `📊 [${org} - ${proj}] 표 형태 의뢰서 문서 (PDF 저장 모드)`;
+          subEl.textContent = `제출 일시: ${time} | 우측 [A4 PDF로 저장 / 인쇄하기] 버튼을 눌러 표 형태 문서를 그대로 저장하세요.`;
+          setReadOnlyMode(true);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          setTimeout(() => {
+            window.print();
+          }, 350);
+          return true;
+        }
+
         titleEl.textContent = `📋 [${org} - ${proj}] 작성 원본 열람 모드 (운영자 전용)`;
         subEl.textContent = `제출 일시: ${time} | 우측 [A4 PDF로 저장 / 인쇄하기] 버튼을 눌러 원본 형태 그대로 보관하세요.`;
 
@@ -1873,12 +2025,14 @@
     function restoreFormFromUrl() {
       const params = new URLSearchParams(window.location.search);
       let encoded = params.get("d");
+      let isTableMode = params.get("mode") === "table";
       if (!encoded && window.location.hash && window.location.hash.includes("d=")) {
         const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
         encoded = hashParams.get("d");
+        if (!isTableMode) isTableMode = hashParams.get("mode") === "table";
       }
       if (encoded) {
-        applyEncodedState(encoded);
+        applyEncodedState(encoded, isTableMode);
       }
     }
 
@@ -1923,9 +2077,14 @@
 
     // 4. 사람이 읽기 쉬운 한글 요약 데이터 추출 (이메일 & 구글 시트 신/구버전 완벽 호환)
     function collectReadableSummary(shareUrl, attachments = []) {
+      const getLabelText = (input) => {
+        if (!input || !input.parentElement) return "";
+        return (input.parentElement.innerText || input.parentElement.textContent || "").trim();
+      };
       const getCheckedTexts = (name) => {
         return Array.from(form.querySelectorAll(`input[name="${name}"]:checked`))
-          .map((input) => input.parentElement.innerText.trim())
+          .map((input) => getLabelText(input))
+          .filter(Boolean)
           .join(", ") || "-";
       };
       const getVal = (name) => {
@@ -1944,7 +2103,8 @@
       };
       const getCardCheckedTexts = (card, fieldKey) => {
         return Array.from(card.querySelectorAll(`input[data-field="${fieldKey}"]:checked`))
-          .map((input) => input.parentElement.innerText.trim())
+          .map((input) => getLabelText(input))
+          .filter(Boolean)
           .join(", ") || "-";
       };
 
@@ -1964,7 +2124,7 @@
         const delivParts = [];
         const checkedDelivs = Array.from(card.querySelectorAll(`input[data-field="deliverable"]:checked`));
         checkedDelivs.forEach((chk) => {
-          const labelText = chk.parentElement.innerText.trim();
+          const labelText = getLabelText(chk);
           let countText = "-";
           if (chk.value === "shortform") countText = sf;
           if (chk.value === "longform") countText = lf;
@@ -2035,13 +2195,15 @@
       const attachedNamesStr =
         attachments.length > 0
           ? attachments.map((a) => `${a.name} (${a.sizeText})`).join(", ")
-          : "-";
+          : restoredAttachedFileNames.length > 0
+            ? restoredAttachedFileNames.join(", ")
+            : "-";
       const sourceLinkStr = getVal("sourceLink");
       const providedTypes = getCheckedTexts("providedAssets");
 
       const combinedSourceSummary = [
         `선택 항목: ${providedTypes}`,
-        attachments.length > 0 ? `첨부 파일: ${attachedNamesStr} (이메일 첨부파일 참조)` : null,
+        attachedNamesStr !== "-" ? `첨부 파일: ${attachedNamesStr} (이메일 첨부파일 참조)` : null,
         sourceLinkStr !== "-" ? `공유 링크: ${sourceLinkStr}` : null
       ]
         .filter(Boolean)
