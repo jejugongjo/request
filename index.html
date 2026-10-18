@@ -878,40 +878,13 @@
         </div>
 
         <div class="form-group">
-          <label class="field-label">현장 특수 촬영 및 장비 요청 (중복 선택 가능) <span class="req">*</span></label>
-          <p class="helper-text">투입 인력 및 장비(마이크, 조명, 카메라 대수) 산정을 위해 필요한 항목을 모두 선택해주세요.</p>
-          <div class="options-grid cols-2">
-            <label class="option-card">
-              <input type="checkbox" name="specialReq" value="interview" />
-              <span>현장 인터뷰 포함 (핀마이크 / 인터뷰 조명 필요)</span>
-            </label>
-            <label class="option-card">
-              <input type="checkbox" name="specialReq" value="multicam" />
-              <span>다중 카메라 촬영 (2대 이상 멀티캠)</span>
-            </label>
-            <label class="option-card">
-              <input type="checkbox" name="specialReq" value="drone" />
-              <span>드론 항공 촬영</span>
-            </label>
-            <label class="option-card">
-              <input type="checkbox" name="specialReq" value="audio_line" />
-              <span>현장 음향 콘솔 라인 수음 (강연/공연)</span>
-            </label>
-            <label class="option-card span-full">
-              <input type="checkbox" name="specialReq" value="basic" />
-              <span>해당 없음 (기본 현장 스케치 촬영만 진행)</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
           <label class="field-label">반드시 담아야 하는 핵심 내용 (원포인트 메시지) <span class="req">*</span></label>
           <input type="text" name="keyMessage" placeholder="예: 행사의 취지, 참가자 현장 인터뷰 2명, 생생한 현장 분위기 등" required />
         </div>
 
         <div class="form-group">
           <label class="field-label">촬영 원본(클린본 / 전체 사진) 데이터 필요 여부 <span class="req">*</span></label>
-          <div class="options-grid cols-3">
+          <div class="options-grid cols-2">
             <label class="option-card">
               <input type="radio" name="rawData" value="final_only" required />
               <span>최종 편집본(완성본)만 납품</span>
@@ -919,10 +892,6 @@
             <label class="option-card">
               <input type="radio" name="rawData" value="raw_needed" />
               <span>촬영 원본 추가 구매 희망 (별도 비용)</span>
-            </label>
-            <label class="option-card">
-              <input type="radio" name="rawData" value="consult" />
-              <span>견적 비교 후 결정 희망</span>
             </label>
           </div>
         </div>
@@ -1012,12 +981,6 @@
         </div>
 
         <div class="form-group">
-          <label class="field-label">참고 레퍼런스 (유사한 영상 링크나 스타일)</label>
-          <p class="helper-text">원하시는 분위기나 벤치마킹할 유튜브·인스타그램 링크가 있다면 적어주세요.</p>
-          <textarea name="reference" placeholder="예: https://youtu.be/... (초반 오프닝 자막 스타일과 밝은 배경음악 톤을 참고하고 싶습니다.)"></textarea>
-        </div>
-
-        <div class="form-group">
           <label class="field-label">자막 및 내레이션 선호도 (중복 선택 가능)</label>
           <div class="options-grid cols-2">
             <label class="option-card">
@@ -1063,6 +1026,12 @@
               <span>현장감 넘치고 역동적인 (에너지 강조)</span>
             </label>
           </div>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">참고 레퍼런스 (유사한 영상 링크나 스타일)</label>
+          <p class="helper-text">원하시는 분위기나 벤치마킹할 유튜브·인스타그램 링크가 있다면 적어주세요.</p>
+          <textarea name="reference" placeholder="예: https://youtu.be/... (초반 오프닝 자막 스타일과 밝은 배경음악 톤을 참고하고 싶습니다.)"></textarea>
         </div>
       </div>
 
@@ -1322,14 +1291,13 @@
         "3_롱폼분량": getVal("longformCount"),
         "3_사진장수": getVal("photoCount"),
         "3_화면비율": getCheckedTexts("aspectRatio"),
-        "4_특수촬영요청": getCheckedTexts("specialReq"),
         "4_핵심메시지": getVal("keyMessage"),
         "4_원본데이터필요여부": getCheckedTexts("rawData"),
         "5_행사성격": getCheckedTexts("eventType"),
         "5_타겟시청자": getCheckedTexts("targetAudience"),
-        "6_참고레퍼런스": getVal("reference"),
         "6_자막내레이션": getCheckedTexts("audioStyle"),
         "6_영상톤앤매너": getCheckedTexts("toneAndManner"),
+        "6_참고레퍼런스": getVal("reference"),
         "7_제공가능소스": getCheckedTexts("providedAssets"),
         "7_초상권동의여부": getCheckedTexts("portraitRight"),
         "7_기타요청사항": getVal("additionalNotes"),
