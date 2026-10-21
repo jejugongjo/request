@@ -734,6 +734,11 @@
       color: var(--brand-navy);
     }
 
+    .step-pill.style {
+      background-color: var(--brand-lime);
+      color: var(--brand-navy);
+    }
+
     .add-content-btn {
       margin-top: 18px;
       width: 100%;
@@ -1007,7 +1012,7 @@
     <div class="header">
       <div class="header-tag">PRODUCTION REQUEST FORM</div>
       <h1>영상 및 사진 제작 의뢰서</h1>
-      <p>1~4번은 가견적 및 스케줄 확인을 위한 필수 항목(<span class="req-dot">*</span>)이며, 5~7번은 의뢰 확정 후 작성 가능한 선택 항목입니다.</p>
+      <p>1~4번은 가견적 및 스케줄 확인을 위한 필수 항목(<span class="req-dot">*</span>)이며, 5~6번은 의뢰 확정 후 작성 가능한 선택 항목입니다.</p>
     </div>
 
     <form id="productionRequestForm">
@@ -1212,22 +1217,109 @@
               <div class="content-step-box">
                 <div class="content-step-title">
                   <span class="step-pill concept">STEP 2</span>
-                  콘텐츠 콘셉트 · 핵심 내용 · 활용처
+                  연출 방향 · 핵심 내용 · 활용처
                 </div>
 
                 <div class="form-group">
-                  <label class="field-label">제작 방향 (희망 콘셉트 및 연출 방향) <span class="req">*</span></label>
-                  <input type="text" name="c1_direction" data-field="direction" placeholder="예: 현장 분위기를 살린 빠른 템포의 하이라이트 / 인터뷰 중심의 차분한 스토리텔링 등" required />
+                  <label class="field-label">연출 방향 (희망하는 영상 컨셉) <span class="req">*</span></label>
+                  <p class="helper-text">어떤 분위기와 흐름의 영상을 원하시는지, 시청자가 보고 난 뒤 어떤 느낌을 받았으면 하는지 문장으로 자세히 적어주세요.</p>
+                  <textarea name="c1_direction" data-field="direction" rows="4" placeholder="예) 행사 당일의 활기찬 분위기가 잘 느껴지도록 빠른 컷 전환과 경쾌한 음악으로 구성된 1분 내외의 하이라이트 영상을 원합니다. 도입부는 행사장 전경 드론샷으로 시작해 참가자들의 웃는 얼굴과 체험 장면을 리듬감 있게 보여주고, 마지막에는 '내년에도 함께해요'라는 메시지로 마무리했으면 합니다." required></textarea>
                 </div>
 
                 <div class="form-group">
                   <label class="field-label">반드시 담아야 하는 핵심 내용 (원포인트 메시지) <span class="req">*</span></label>
-                  <input type="text" name="c1_keyMessage" data-field="keyMessage" placeholder="예: 행사의 취지, 참가자 현장 인터뷰 2명, 주요 프로그램 진행 장면 등" required />
+                  <p class="helper-text">이 콘텐츠를 통해 시청자에게 꼭 전달하고 싶은 메시지와 정보(행사명·일정·참여 방법 등)를 적어주세요.</p>
+                  <textarea name="c1_keyMessage" data-field="keyMessage" rows="4" placeholder="예) '누구나 쉽고 즐겁게 참여할 수 있는 마을 축제'라는 점이 가장 잘 전달되었으면 합니다. 행사명(2026 소길리 팜파티)과 일시·장소 자막이 반드시 들어가야 하며, 다음 회차 참가 신청은 공식 인스타그램 DM으로 받는다는 안내 문구로 마무리해 주세요." required></textarea>
                 </div>
 
                 <div class="form-group">
                   <label class="field-label">활용처 (업로드 매체 및 사용 목적) <span class="req">*</span></label>
-                  <input type="text" name="c1_usage" data-field="usage" placeholder="예: 공식 인스타그램 릴스, 유튜브 채널 업로드, 성과공유회 현장 상영, 내부 결과보고용 등" required />
+                  <p class="helper-text">어디에 업로드하거나 상영할 예정인지, 어떤 목적(홍보·기록·보고 등)으로 활용하실지 적어주세요.</p>
+                  <textarea name="c1_usage" data-field="usage" rows="3" placeholder="예) 공식 인스타그램 릴스와 유튜브 쇼츠에 업로드하여 다음 행사 참가자 모집 홍보에 활용할 예정이며, 연말 성과공유회 현장에서도 오프닝 영상으로 상영할 계획입니다." required></textarea>
+                </div>
+              </div>
+
+              <!-- STEP 3: 연출 및 편집 스타일 -->
+              <div class="content-step-box">
+                <div class="content-step-title">
+                  <span class="step-pill style">STEP 3</span>
+                  연출 · 편집 스타일 및 세부 요청
+                  <span class="badge-opt">선택 입력</span>
+                </div>
+                <p class="helper-text" style="margin-top: -6px; margin-bottom: 16px;">자세히 적어주실수록 기획 단계에서 다시 여쭤보는 과정 없이 원하시는 결과물에 가깝게 제작할 수 있습니다.</p>
+
+                <div class="form-group">
+                  <label class="field-label">희망 영상 톤앤매너 (중복 선택 가능)</label>
+                  <p class="helper-text">편집 시 배경음악(BGM) 선곡, 자막 디자인, 컷 편집 속도의 기준이 됩니다.</p>
+                  <div class="options-grid cols-2">
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="trendy" />
+                      <span>밝고 트렌디한 (빠른 템포·리듬감)</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="cinematic" />
+                      <span>차분하고 감성적인 (시네마틱·여운)</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="trustworthy" />
+                      <span>신뢰감 있고 깔끔한 (공공기관·기업 정석)</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="dynamic" />
+                      <span>현장감 넘치고 역동적인 (에너지 강조)</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="warm" />
+                      <span>따뜻하고 진정성 있는 (다큐·인터뷰 중심)</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="fun" />
+                      <span>유쾌하고 위트 있는 (예능 자막·효과음)</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="touching" />
+                      <span>감동적인 스토리텔링 (서사·내레이션)</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="premium" />
+                      <span>세련되고 고급스러운 (브랜드 필름)</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="info" />
+                      <span>명확한 정보 전달형 (인포그래픽·자막 중심)</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="retro" />
+                      <span>레트로 · 빈티지 감성 (필름 톤)</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="cute" />
+                      <span>귀엽고 아기자기한 (어린이·가족 대상)</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="other" />
+                      <span>기타 (아래에 직접 입력)</span>
+                    </label>
+                  </div>
+                  <input type="text" name="c1_toneOther" data-field="toneOther" style="margin-top: 12px;" placeholder="원하시는 톤앤매너를 직접 적어주세요. (예: 초반은 잔잔하게 시작해 후반으로 갈수록 점점 고조되는 분위기)" />
+                </div>
+
+                <div class="form-group">
+                  <label class="field-label">꼭 들어가야 하는 장면</label>
+                  <p class="helper-text">반드시 촬영·포함되어야 하는 인물, 장소, 순서, 컷 등을 자유롭게 적어주세요.</p>
+                  <textarea name="c1_mustScenes" data-field="mustScenes" rows="4" placeholder="예) 1. 이장님 환영 인사 장면 (약 10초)&#10;2. 아이들이 감귤 따기 체험을 하는 클로즈업 컷&#10;3. 단체 기념 촬영 장면과 행사장 전경 드론샷&#10;4. 참가자 인터뷰 2명 (가족 단위 참가자 1팀, 청년 참가자 1명)"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="field-label">참고 레퍼런스 (유사한 영상 링크나 스타일)</label>
+                  <p class="helper-text">원하시는 분위기나 벤치마킹할 유튜브·인스타그램 링크가 있다면, 어떤 점을 참고하고 싶은지와 함께 적어주세요.</p>
+                  <textarea name="c1_reference" data-field="reference" rows="3" placeholder="예) https://youtu.be/... 영상의 초반 오프닝 자막 스타일과 밝은 배경음악 톤을 참고하고 싶습니다."></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="field-label">기타 요청 사항</label>
+                  <p class="helper-text">자막·내레이션·음악·로고 노출 방식 등 이 콘텐츠에 대해 추가로 전달하고 싶은 내용을 자유롭게 적어주세요.</p>
+                  <textarea name="c1_cardNotes" data-field="cardNotes" rows="3" placeholder="예) 기관 로고는 영상 마지막 엔딩 화면에만 노출해 주시고, 자막은 기관 전용 서체를 사용해 주세요. 저작권 문제가 없는 무료 음원으로 부탁드립니다."></textarea>
                 </div>
               </div>
             </div>
@@ -1265,54 +1357,13 @@
       <!-- 선택 옵션 구분 배너 (5번 이후) -->
       <div class="phase-banner">
         <h2>💡 상세 기획 및 제작 옵션 (선택 입력 / 의뢰 확정 후 작성 가능)</h2>
-        <p>아래 5~7번 항목은 가견적 문의 시 비워두셔도 되며, 제작 확정 후 미팅 전까지 작성해주셔도 됩니다.</p>
+        <p>아래 5~6번 항목은 가견적 문의 시 비워두셔도 되며, 제작 확정 후 미팅 전까지 작성해주셔도 됩니다.</p>
       </div>
 
-      <!-- 5. 콘텐츠 연출 및 편집 디테일 (선택) -->
+      <!-- 5. 행사 성격 및 타겟 시청자 (선택) -->
       <div class="section">
         <div class="section-title">
           <span class="sec-num opt">5</span>
-          콘텐츠 연출 및 편집 스타일
-          <span class="badge-opt">선택 항목</span>
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">
-            희망 영상 톤앤매너
-            <span class="badge-new">실무 추가</span>
-          </label>
-          <p class="helper-text">편집 시 배경음악(BGM) 선곡과 컷 편집 속도의 기준이 됩니다.</p>
-          <div class="options-grid cols-2">
-            <label class="option-card">
-              <input type="radio" name="toneAndManner" value="trendy" />
-              <span>밝고 트렌디한 (빠른 템포·리듬감)</span>
-            </label>
-            <label class="option-card">
-              <input type="radio" name="toneAndManner" value="cinematic" />
-              <span>차분하고 감성적인 (시네마틱·여운)</span>
-            </label>
-            <label class="option-card">
-              <input type="radio" name="toneAndManner" value="trustworthy" />
-              <span>신뢰감 있고 깔끔한 (공공기관·기업 정석)</span>
-            </label>
-            <label class="option-card">
-              <input type="radio" name="toneAndManner" value="dynamic" />
-              <span>현장감 넘치고 역동적인 (에너지 강조)</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">참고 레퍼런스 (유사한 영상 링크나 스타일)</label>
-          <p class="helper-text">원하시는 분위기나 벤치마킹할 유튜브·인스타그램 링크가 있다면 적어주세요.</p>
-          <textarea name="reference" placeholder="예: https://youtu.be/... (초반 오프닝 자막 스타일과 밝은 배경음악 톤을 참고하고 싶습니다.)"></textarea>
-        </div>
-      </div>
-
-      <!-- 6. 행사 성격 및 타겟 시청자 (선택) -->
-      <div class="section">
-        <div class="section-title">
-          <span class="sec-num opt">6</span>
           행사 성격 및 타겟 시청자
           <span class="badge-opt">선택 항목</span>
         </div>
@@ -1378,10 +1429,10 @@
         </div>
       </div>
 
-      <!-- 7. 제공 소스 및 초상권·저작권 확인 (선택) -->
+      <!-- 6. 제공 소스 및 초상권·저작권 확인 (선택) -->
       <div class="section">
         <div class="section-title">
-          <span class="sec-num opt">7</span>
+          <span class="sec-num opt">6</span>
           제공 및 활용 소스 / 초상권 확인
           <span class="badge-opt">선택 항목</span>
         </div>
@@ -1510,7 +1561,7 @@
      * ============================================================
      */
     const COMPANY_EMAIL = "jeju.gongjo@gmail.com";
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwAH9HEvyhinO4sqj4y7cyQRxK5GzeOOQQiyOSczjBF3BJq9dVtOf4Bf8C7EDoh_ECj/exec";
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby5wDrIzOgAS4O5ulk5P1ziL7sWXimO-qgbppVoj9I1AG7CubvS1Ps0SGctZVugkCcFrQ/exec";
 
     const form = document.getElementById("productionRequestForm");
     const contentContainer = document.getElementById("contentItemsContainer");
@@ -1703,7 +1754,12 @@
       "aspectRatio",
       "direction",
       "keyMessage",
-      "usage"
+      "usage",
+      "tone",
+      "toneOther",
+      "mustScenes",
+      "reference",
+      "cardNotes"
     ];
 
     function bytesToBase64Url(bytes) {
@@ -1838,7 +1894,7 @@
         }
       });
 
-      const checkboxCardFields = new Set(["deliverable", "aspectRatio"]);
+      const checkboxCardFields = new Set(["deliverable", "aspectRatio", "tone"]);
       cardValsList.forEach((cardVals, cIdx) => {
         const num = cIdx + 1;
         CARD_FIELDS.forEach((fieldKey, fIdx) => {
@@ -1879,15 +1935,13 @@
       "3_의뢰콘텐츠_수량",
       "3_의뢰콘텐츠_상세내역",
       "4_원본데이터필요여부",
-      "5_영상톤앤매너",
-      "5_참고레퍼런스",
-      "6_행사성격",
-      "6_타겟시청자",
-      "7_제공가능소스",
-      "7_첨부파일목록",
-      "7_소스공유링크",
-      "7_초상권동의여부",
-      "7_기타요청사항"
+      "5_행사성격",
+      "5_타겟시청자",
+      "6_제공가능소스",
+      "6_첨부파일목록",
+      "6_소스공유링크",
+      "6_초상권동의여부",
+      "6_기타요청사항"
     ];
 
     function escapeHtml(str) {
@@ -2143,15 +2197,31 @@
         const keyMsg = getCardVal(card, "keyMessage");
         const usage = getCardVal(card, "usage");
 
-        const fullBlock = [
+        const tone = getCardCheckedTexts(card, "tone");
+        const toneOther = getCardVal(card, "toneOther");
+        let toneStr = tone;
+        if (toneOther !== "-") {
+          toneStr = toneStr !== "-" ? `${toneStr} (기타: ${toneOther})` : `기타: ${toneOther}`;
+        }
+        const mustScenes = getCardVal(card, "mustScenes");
+        const reference = getCardVal(card, "reference");
+        const cardNotes = getCardVal(card, "cardNotes");
+
+        const fullBlockLines = [
           headerTitle,
           `  • 제작 구분: ${prodType}`,
           `  • 결과물 형태/분량: ${deliverableStr}`,
           `  • 희망 화면 비율: ${ratio}`,
-          `  • 제작 방향: ${direction}`,
-          `  • 핵심 내용: ${keyMsg}`,
+          `  • 연출 방향 (희망 컨셉): ${direction}`,
+          `  • 반드시 담아야 하는 핵심 내용: ${keyMsg}`,
           `  • 활용처: ${usage}`
-        ].join("\n");
+        ];
+        if (toneStr !== "-") fullBlockLines.push(`  • 희망 영상 톤앤매너: ${toneStr}`);
+        if (mustScenes !== "-") fullBlockLines.push(`  • 꼭 들어가야 하는 장면:\n    ${mustScenes.replace(/\n/g, "\n    ")}`);
+        if (reference !== "-") fullBlockLines.push(`  • 참고 레퍼런스: ${reference}`);
+        if (cardNotes !== "-") fullBlockLines.push(`  • 기타 요청 사항: ${cardNotes}`);
+
+        const fullBlock = fullBlockLines.join("\n");
 
         return {
           n,
@@ -2166,6 +2236,10 @@
           direction,
           keyMsg,
           usage,
+          toneStr,
+          mustScenes,
+          reference,
+          cardNotes,
           fullBlock
         };
       });
@@ -2186,11 +2260,23 @@
       const legacyPhoto = formatPerCard((c) => c.ph);
       const legacyRatio = formatPerCard((c) => c.ratio);
       const legacyConceptAndKeyMsg = cardDetails
-        .map(
-          (c) =>
-            `${c.headerTitle}\n• 제작 방향: ${c.direction}\n• 핵심 내용: ${c.keyMsg}\n• 활용처: ${c.usage}`
-        )
+        .map((c) => {
+          const lines = [
+            c.headerTitle,
+            `• 연출 방향 (희망 컨셉): ${c.direction}`,
+            `• 반드시 담아야 하는 핵심 내용: ${c.keyMsg}`,
+            `• 활용처: ${c.usage}`
+          ];
+          if (c.toneStr !== "-") lines.push(`• 희망 영상 톤앤매너: ${c.toneStr}`);
+          if (c.mustScenes !== "-") lines.push(`• 꼭 들어가야 하는 장면: ${c.mustScenes}`);
+          if (c.reference !== "-") lines.push(`• 참고 레퍼런스: ${c.reference}`);
+          if (c.cardNotes !== "-") lines.push(`• 기타 요청 사항: ${c.cardNotes}`);
+          return lines.join("\n");
+        })
         .join("\n\n");
+
+      const legacyCardTone = formatPerCard((c) => c.toneStr);
+      const legacyCardRef = formatPerCard((c) => c.reference);
 
       const attachedNamesStr =
         attachments.length > 0
@@ -2239,15 +2325,22 @@
         "3_화면비율": legacyRatio,
         "4_원본데이터필요여부": getCheckedTexts("rawData"),
         "4_핵심메시지": legacyConceptAndKeyMsg,
-        // 5번 & 6번 순서 변경 전/후 컬럼명 모두 호환
-        "5_영상톤앤매너": toneVal,
-        "5_참고레퍼런스": refVal,
-        "6_행사성격": eventVal,
-        "6_타겟시청자": targetVal,
+        // 신규 5번: 행사 성격 및 타겟 시청자
         "5_행사성격": eventVal,
         "5_타겟시청자": targetVal,
-        "6_참고레퍼런스": refVal,
-        "6_영상톤앤매너": toneVal,
+        // 신규 6번: 제공 소스 및 초상권
+        "6_제공가능소스": combinedSourceSummary,
+        "6_첨부파일목록": attachedNamesStr,
+        "6_소스공유링크": sourceLinkStr,
+        "6_초상권동의여부": getCheckedTexts("portraitRight"),
+        "6_기타요청사항": getVal("additionalNotes"),
+        // 구버전 및 기존 구글 시트/스크립트 완벽 호환 매핑
+        "5_영상톤앤매너": legacyCardTone !== "-" ? legacyCardTone : toneVal,
+        "5_참고레퍼런스": legacyCardRef !== "-" ? legacyCardRef : refVal,
+        "6_행사성격": eventVal,
+        "6_타겟시청자": targetVal,
+        "6_참고레퍼런스": legacyCardRef !== "-" ? legacyCardRef : refVal,
+        "6_영상톤앤매너": legacyCardTone !== "-" ? legacyCardTone : toneVal,
         "7_제공가능소스": combinedSourceSummary,
         "7_첨부파일목록": attachedNamesStr,
         "7_소스공유링크": sourceLinkStr,
@@ -2327,13 +2420,11 @@
           "3_의뢰콘텐츠_수량",
           "3_의뢰콘텐츠_상세내역",
           "4_원본데이터필요여부",
-          "5_영상톤앤매너",
-          "5_참고레퍼런스",
-          "6_행사성격",
-          "6_타겟시청자",
-          "7_제공가능소스",
-          "7_초상권동의여부",
-          "7_기타요청사항",
+          "5_행사성격",
+          "5_타겟시청자",
+          "6_제공가능소스",
+          "6_초상권동의여부",
+          "6_기타요청사항",
           "원본폼_열람_및_PDF저장_링크"
         ];
         const bodyLines = mailKeys.map((k) => `• ${k}: ${payload[k] || "-"}`).join("\n");
