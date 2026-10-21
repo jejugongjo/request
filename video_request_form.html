@@ -1,0 +1,2439 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>영상 및 사진 제작 의뢰서</title>
+  <style>
+    :root {
+      /* Brand Color Palette */
+      --brand-bg: #F2F0ED;       /* Warm Off-White */
+      --brand-amber: #FAAD34;    /* Golden Amber */
+      --brand-lime: #CEDC28;     /* Chartreuse Lime */
+      --brand-orange: #F05A22;   /* Vibrant Orange */
+      --brand-navy: #221E53;     /* Deep Indigo Navy */
+
+      /* UI Semantic Tokens */
+      --card-bg: #FFFFFF;
+      --surface-warm: #F9F8F6;
+      --text-main: #221E53;
+      --text-body: #3A3668;
+      --text-muted: #767396;
+      --border: #E2DFDA;
+      --border-strong: #CEC9C0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", "Segoe UI", Roboto, sans-serif;
+      background-color: var(--brand-bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 48px 16px 64px;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: 0 12px 36px rgba(34, 30, 83, 0.08);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    /* Brand Color Bar at Top */
+    .brand-bar {
+      display: grid;
+      grid-template-columns: 2fr 1.5fr 1fr 1fr;
+      height: 8px;
+    }
+    .brand-bar span:nth-child(1) { background-color: var(--brand-navy); }
+    .brand-bar span:nth-child(2) { background-color: var(--brand-orange); }
+    .brand-bar span:nth-child(3) { background-color: var(--brand-amber); }
+    .brand-bar span:nth-child(4) { background-color: var(--brand-lime); }
+
+    /* Header */
+    .header {
+      background-color: var(--brand-navy);
+      color: #FFFFFF;
+      padding: 40px 48px 36px;
+      position: relative;
+    }
+
+    .header-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: rgba(250, 173, 52, 0.16);
+      color: var(--brand-amber);
+      border: 1px solid rgba(250, 173, 52, 0.4);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      color: #FFFFFF;
+    }
+
+    .header p {
+      color: rgba(242, 240, 237, 0.82);
+      font-size: 14px;
+    }
+
+    .header p .req-dot {
+      color: var(--brand-orange);
+      font-weight: 800;
+    }
+
+    form {
+      padding: 44px 48px 52px;
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 40px;
+      padding-bottom: 34px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section:last-of-type {
+      border-bottom: none;
+      margin-bottom: 28px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--brand-navy);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .sec-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background-color: var(--brand-navy);
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .sec-num.opt {
+      background-color: var(--brand-lime);
+      color: var(--brand-navy);
+    }
+
+    .badge-new {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background-color: rgba(250, 173, 52, 0.22);
+      color: #9A5B00;
+      border: 1px solid rgba(250, 173, 52, 0.5);
+    }
+
+    .badge-opt {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background-color: rgba(206, 220, 40, 0.35);
+      color: var(--brand-navy);
+      border: 1px solid #BDCB1E;
+    }
+
+    /* Phase 2 Banner (Sections 5-7) */
+    .phase-banner {
+      background-color: var(--brand-bg);
+      border-left: 5px solid var(--brand-lime);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 40px 0 34px;
+    }
+
+    .phase-banner h2 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--brand-navy);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .phase-banner p {
+      font-size: 13.5px;
+      color: var(--text-body);
+    }
+
+    /* Form Controls */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px 20px;
+    }
+
+    .form-grid .form-group {
+      margin-bottom: 0;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label.field-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--brand-navy);
+      margin-bottom: 8px;
+    }
+
+    .req {
+      color: var(--brand-orange);
+      font-weight: 800;
+    }
+
+    .helper-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: -4px;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="date"],
+    input[type="number"],
+    input[type="url"],
+    select {
+      width: 100%;
+      height: 50px;
+      padding: 0 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 14.5px;
+      font-family: inherit;
+      color: var(--brand-navy);
+      background: var(--surface-warm);
+      transition: all 0.15s ease;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 104px;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 14.5px;
+      font-family: inherit;
+      color: var(--brand-navy);
+      background: var(--surface-warm);
+      resize: vertical;
+      transition: all 0.15s ease;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #9A97B0;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      background: #FFFFFF;
+      border-color: var(--brand-orange);
+      box-shadow: 0 0 0 3px rgba(240, 90, 34, 0.14);
+    }
+
+    /* Standardized Option Cards (Radio & Checkbox) */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .options-grid.cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .options-grid.cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .option-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background-color: #FFFFFF;
+      cursor: pointer;
+      font-size: 14.5px;
+      line-height: 1.35;
+      color: var(--text-body);
+      transition: all 0.15s ease;
+    }
+
+    .option-card.span-full {
+      grid-column: 1 / -1;
+    }
+
+    .option-card:hover {
+      background-color: var(--surface-warm);
+      border-color: var(--brand-amber);
+    }
+
+    .option-card input {
+      flex-shrink: 0;
+      margin: 0;
+      accent-color: var(--brand-orange);
+      width: 17px;
+      height: 17px;
+    }
+
+    .option-card:has(input:checked) {
+      background-color: rgba(250, 173, 52, 0.08);
+      border-color: var(--brand-orange);
+      color: var(--brand-navy);
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(240, 90, 34, 0.08);
+    }
+
+    /* Deliverable Inline Rows */
+    .inline-input-row {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      align-items: center;
+      gap: 16px;
+      min-height: 58px;
+      padding: 8px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 12px;
+      background-color: #FFFFFF;
+      transition: all 0.15s ease;
+    }
+
+    .inline-input-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .inline-input-row:has(input[type="checkbox"]:checked) {
+      border-color: var(--brand-orange);
+      background-color: rgba(250, 173, 52, 0.08);
+    }
+
+    .inline-input-row label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14.5px;
+      color: var(--brand-navy);
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .inline-input-row input[type="checkbox"] {
+      flex-shrink: 0;
+      accent-color: var(--brand-orange);
+      width: 17px;
+      height: 17px;
+    }
+
+    .inline-input-row input[type="text"] {
+      width: 100%;
+      height: 40px;
+      padding: 0 14px;
+      font-size: 13.5px;
+      background-color: #FFFFFF;
+    }
+
+    /* Submit CTA & Secondary Action Buttons */
+    .submit-area {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 17px 24px;
+      background-color: var(--brand-orange);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 12px;
+      font-size: 16.5px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition: background-color 0.18s ease, transform 0.1s ease, box-shadow 0.18s ease;
+      box-shadow: 0 6px 20px rgba(240, 90, 34, 0.28);
+    }
+
+    .submit-btn:hover {
+      background-color: var(--brand-navy);
+      box-shadow: 0 6px 20px rgba(34, 30, 83, 0.25);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.65;
+      cursor: wait;
+    }
+
+    .secondary-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .sec-btn {
+      padding: 13px 18px;
+      background-color: var(--surface-warm);
+      color: var(--brand-navy);
+      border: 1.5px solid var(--border-strong);
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .sec-btn:hover {
+      background-color: #FFFFFF;
+      border-color: var(--brand-navy);
+    }
+
+    /* Operator Original View Banner */
+    .admin-view-bar {
+      display: none;
+      max-width: 980px;
+      margin: 0 auto 18px;
+      background-color: var(--brand-navy);
+      color: #FFFFFF;
+      padding: 16px 24px;
+      border-radius: 14px;
+      border-left: 6px solid var(--brand-lime);
+      box-shadow: 0 8px 24px rgba(34, 30, 83, 0.15);
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .admin-view-bar.active {
+      display: flex;
+    }
+
+    .admin-view-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .admin-view-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--brand-lime);
+    }
+
+    .admin-view-sub {
+      font-size: 13px;
+      color: rgba(242, 240, 237, 0.85);
+    }
+
+    .admin-view-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .admin-btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s ease;
+    }
+
+    .admin-btn.primary {
+      background-color: var(--brand-orange);
+      color: #FFFFFF;
+    }
+
+    .admin-btn.primary:hover {
+      background-color: var(--brand-amber);
+      color: var(--brand-navy);
+    }
+
+    .admin-btn.outline {
+      background-color: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* Result / Status Modal */
+    .status-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(34, 30, 83, 0.55);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .status-modal-backdrop.active {
+      display: flex;
+    }
+
+    .status-modal {
+      background: #FFFFFF;
+      max-width: 520px;
+      width: 100%;
+      border-radius: 18px;
+      padding: 32px 28px;
+      box-shadow: 0 20px 50px rgba(34, 30, 83, 0.25);
+      border-top: 6px solid var(--brand-orange);
+      text-align: center;
+    }
+
+    .status-modal h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--brand-navy);
+      margin-bottom: 10px;
+    }
+
+    .status-modal p {
+      font-size: 14px;
+      color: var(--text-body);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .status-modal-btns {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    /* Page Bottom Brand Footer */
+    .page-footer {
+      max-width: 980px;
+      margin: 28px auto 0;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-align: center;
+    }
+
+    .brand-logo-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(34, 30, 83, 0.14);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .brand-logo-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(34, 30, 83, 0.22);
+    }
+
+    .brand-logo-img {
+      width: 64px;
+      height: 64px;
+      display: block;
+      object-fit: cover;
+    }
+
+    .brand-footer-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand-navy);
+      letter-spacing: 0.02em;
+    }
+
+    .brand-footer-copy {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    /* Multi-Content Repeatable Cards (Section 3) */
+    .content-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .content-card {
+      border: 2px solid var(--border-strong);
+      border-radius: 16px;
+      background-color: #FFFFFF;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(34, 30, 83, 0.05);
+      transition: border-color 0.15s ease;
+    }
+
+    .content-card:focus-within {
+      border-color: var(--brand-navy);
+    }
+
+    .content-card-header {
+      background-color: var(--brand-bg);
+      padding: 14px 20px;
+      border-bottom: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .content-card-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .content-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--brand-navy);
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+
+    .content-title-input {
+      height: 38px !important;
+      font-size: 13.5px !important;
+      background-color: #FFFFFF !important;
+      border: 1.5px solid var(--border-strong) !important;
+      max-width: 420px;
+    }
+
+    .remove-content-btn {
+      padding: 7px 13px;
+      border-radius: 8px;
+      background-color: #FFFFFF;
+      color: var(--brand-orange);
+      border: 1.5px solid rgba(240, 90, 34, 0.4);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .remove-content-btn:hover {
+      background-color: var(--brand-orange);
+      color: #FFFFFF;
+      border-color: var(--brand-orange);
+    }
+
+    .content-card-body {
+      padding: 24px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .content-step-box {
+      background-color: var(--surface-warm);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .content-step-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--brand-navy);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed var(--border-strong);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-pill {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background-color: var(--brand-orange);
+      color: #FFFFFF;
+    }
+
+    .step-pill.concept {
+      background-color: var(--brand-amber);
+      color: var(--brand-navy);
+    }
+
+    .step-pill.style {
+      background-color: var(--brand-lime);
+      color: var(--brand-navy);
+    }
+
+    .add-content-btn {
+      margin-top: 18px;
+      width: 100%;
+      padding: 15px 20px;
+      border-radius: 12px;
+      border: 2px dashed var(--brand-navy);
+      background-color: rgba(34, 30, 83, 0.03);
+      color: var(--brand-navy);
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .add-content-btn:hover {
+      background-color: rgba(250, 173, 52, 0.15);
+      border-color: var(--brand-orange);
+      color: var(--brand-orange);
+    }
+
+    /* Source File Upload Box (Section 7) */
+    .file-upload-box {
+      border: 2px dashed var(--border-strong);
+      border-radius: 12px;
+      background-color: var(--surface-warm);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.15s ease;
+    }
+
+    .file-upload-box:hover {
+      border-color: var(--brand-amber);
+    }
+
+    .file-upload-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .file-select-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      background-color: var(--brand-navy);
+      color: #FFFFFF;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+
+    .file-select-btn:hover {
+      background-color: var(--brand-orange);
+    }
+
+    .file-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 14px;
+      border-radius: 8px;
+      background-color: #FFFFFF;
+      border: 1px solid var(--border);
+      font-size: 13.5px;
+      color: var(--brand-navy);
+      font-weight: 600;
+    }
+
+    .file-item-remove {
+      background: none;
+      border: none;
+      color: var(--brand-orange);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 2px 6px;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 28px 22px;
+      }
+      form {
+        padding: 28px 20px 36px;
+      }
+      .form-grid,
+      .options-grid,
+      .options-grid.cols-2,
+      .options-grid.cols-3,
+      .secondary-actions {
+        grid-template-columns: 1fr;
+      }
+      .inline-input-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 12px 14px;
+      }
+      .content-card-header-left {
+        min-width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .content-title-input {
+        max-width: 100%;
+      }
+    }
+
+    /* Print / Save as PDF Mode */
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      body {
+        background-color: #FFFFFF !important;
+        padding: 0 !important;
+      }
+      .container {
+        max-width: 100% !important;
+        box-shadow: none !important;
+        border: 1px solid #CEC9C0 !important;
+      }
+      .no-print,
+      .submit-area,
+      .admin-view-bar,
+      .status-modal-backdrop,
+      .add-content-btn,
+      .remove-content-btn {
+        display: none !important;
+      }
+      .section,
+      .form-group,
+      .content-card,
+      .phase-banner,
+      .page-footer {
+        break-inside: avoid;
+      }
+      .table-pdf-doc {
+        max-width: 100% !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        border: 1px solid #CEC9C0 !important;
+      }
+      .table-pdf-doc tr {
+        break-inside: avoid;
+      }
+    }
+
+    /* Table Document View Mode (Opened when clicking [PDF 저장하기] in email) */
+    .table-pdf-doc {
+      display: none;
+      max-width: 780px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 36px rgba(34, 30, 83, 0.08);
+    }
+    .table-pdf-doc.active {
+      display: block;
+    }
+    .table-pdf-header {
+      background: var(--brand-navy);
+      color: #FFFFFF;
+      padding: 28px 32px;
+    }
+    .table-pdf-tag {
+      color: var(--brand-amber);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    .table-pdf-header h2 {
+      margin: 0;
+      font-size: 21px;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.4;
+    }
+    .table-pdf-body {
+      padding: 28px 32px 34px;
+      background: #FFFFFF;
+    }
+    .table-pdf-grid {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      border-top: 2px solid var(--brand-navy);
+    }
+    .table-pdf-grid th {
+      text-align: left;
+      vertical-align: top;
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-warm);
+      color: var(--brand-navy);
+      width: 28%;
+      font-weight: 700;
+    }
+    .table-pdf-grid td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-body);
+      white-space: pre-line;
+      line-height: 1.65;
+    }
+  </style>
+</head>
+<body>
+  <!-- Operator Original View Mode Bar (Shown when opening a submitted form link) -->
+  <div id="adminViewBar" class="admin-view-bar no-print">
+    <div class="admin-view-info">
+      <div class="admin-view-title" id="adminViewTitle">📋 의뢰자 작성 원본 열람 모드</div>
+      <div class="admin-view-sub" id="adminViewSub">의뢰자가 제출한 원본 화면입니다. 우측 버튼을 눌러 A4 PDF로 저장하거나 인쇄할 수 있습니다.</div>
+    </div>
+    <div class="admin-view-actions">
+      <button type="button" class="admin-btn outline" id="toggleEditBtn" onclick="toggleReadOnlyMode()">✏️ 내용 수정 잠금 해제</button>
+      <button type="button" class="admin-btn primary" onclick="window.print()">🖨️ A4 PDF로 저장 / 인쇄하기</button>
+    </div>
+  </div>
+
+  <!-- Table Summary PDF Document Container (Shown only when ?mode=table is opened from email [PDF 저장하기]) -->
+  <div id="tablePdfDocContainer" class="table-pdf-doc">
+    <div class="brand-bar">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="table-pdf-header">
+      <div class="table-pdf-tag">NEW PRODUCTION REQUEST</div>
+      <h2 id="tablePdfTitle">[제작의뢰서]</h2>
+    </div>
+    <div class="table-pdf-body">
+      <table class="table-pdf-grid">
+        <tbody id="tablePdfTbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container" id="mainFormContainer">
+    <!-- Top Brand Palette Strip -->
+    <div class="brand-bar">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <div class="header">
+      <div class="header-tag">PRODUCTION REQUEST FORM</div>
+      <h1>영상 및 사진 제작 의뢰서</h1>
+      <p>1~4번은 가견적 및 스케줄 확인을 위한 필수 항목(<span class="req-dot">*</span>)이며, 5~6번은 의뢰 확정 후 작성 가능한 선택 항목입니다.</p>
+    </div>
+
+    <form id="productionRequestForm">
+      <!-- 1. 기본 정보 -->
+      <div class="section">
+        <div class="section-title">
+          <span class="sec-num">1</span>
+          기본 정보
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="field-label">의뢰 기관 / 단체명 <span class="req">*</span></label>
+            <input type="text" name="organization" placeholder="예: OO재단, (주)OO컴퍼니" required />
+          </div>
+          <div class="form-group">
+            <label class="field-label">프로젝트(행사) 명칭 <span class="req">*</span></label>
+            <input type="text" name="projectName" placeholder="예: 2026 상반기 성과공유회 스케치" required />
+          </div>
+          <div class="form-group">
+            <label class="field-label">담당자 성함 / 직함 <span class="req">*</span></label>
+            <input type="text" name="managerName" placeholder="예: 홍길동 대리" required />
+          </div>
+          <div class="form-group">
+            <label class="field-label">연락처 (휴대폰) <span class="req">*</span></label>
+            <input type="tel" name="phone" placeholder="예: 010-1234-5678" required />
+          </div>
+          <div class="form-group full">
+            <label class="field-label">
+              이메일 (견적서 수신용) <span class="req">*</span>
+              <span class="badge-new">실무 추가</span>
+            </label>
+            <input type="email" name="email" placeholder="예: contact@company.com" required />
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. 일정 및 예산 -->
+      <div class="section">
+        <div class="section-title">
+          <span class="sec-num">2</span>
+          촬영 일정 및 예산
+        </div>
+        <div class="form-grid" style="margin-bottom: 24px;">
+          <div class="form-group">
+            <label class="field-label">촬영 일시 <span class="req">*</span></label>
+            <input type="text" name="shootDate" placeholder="예: 2026년 11월 15일(금) 14:00~17:00" required />
+          </div>
+          <div class="form-group">
+            <label class="field-label">촬영 장소 (지역) <span class="req">*</span></label>
+            <input type="text" name="shootLocation" placeholder="예: 서울 코엑스 컨퍼런스룸" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">
+            예상 촬영 시간 (현장 체류 기준) <span class="req">*</span>
+            <span class="badge-new">실무 추가</span>
+          </label>
+          <p class="helper-text">세팅 시간을 포함한 촬영 감독의 현장 체류 시간을 선택해주세요.</p>
+          <div class="options-grid cols-3">
+            <label class="option-card">
+              <input type="radio" name="shootDuration" value="2h" required />
+              <span>2시간 이내 (단시간)</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="shootDuration" value="4h" />
+              <span>반나절 (4시간 이내)</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="shootDuration" value="8h" />
+              <span>종일 (8시간 이내)</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="shootDuration" value="multi" />
+              <span>다회차 촬영 (2일 이상)</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="shootDuration" value="edit_only" />
+              <span>촬영 없음 (편집만 의뢰)</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="shootDuration" value="undecided" />
+              <span>시간 미정 (협의 필요)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="field-label">희망 납품일 (최종 마감일) <span class="req">*</span></label>
+            <input type="date" name="deadline" required />
+          </div>
+          <div class="form-group">
+            <label class="field-label">예산 범위 (VAT 별도) <span class="req">*</span></label>
+            <select name="budget" required>
+              <option value="" disabled selected>예산 범위를 선택해주세요</option>
+              <option value="under_100">100만 원 미만</option>
+              <option value="100_300">100만 원 ~ 300만 원</option>
+              <option value="300_500">300만 원 ~ 500만 원</option>
+              <option value="500_1000">500만 원 ~ 1,000만 원</option>
+              <option value="over_1000">1,000만 원 이상</option>
+              <option value="proposal">예산 미정 (견적 제안 희망)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. 의뢰 콘텐츠별 상세 구성 (복수 추가 가능) -->
+      <div class="section">
+        <div class="section-title">
+          <span class="sec-num">3</span>
+          의뢰 콘텐츠별 상세 구성
+          <span class="badge-new">복수 의뢰 시 콘텐츠 추가 가능</span>
+        </div>
+        <p class="helper-text" style="margin-bottom: 18px;">
+          의뢰하시는 콘텐츠가 2개 이상이고 각각의 형태나 콘셉트가 다르다면, 하단의 <strong>[+ 의뢰 콘텐츠 추가하기]</strong> 버튼을 눌러 각각 나누어 작성해주세요.
+        </p>
+
+        <div id="contentItemsContainer" class="content-items-list">
+          <!-- 의뢰 콘텐츠 #1 -->
+          <div class="content-card" data-index="1">
+            <div class="content-card-header">
+              <div class="content-card-header-left">
+                <span class="content-badge">의뢰 콘텐츠 #1</span>
+                <input type="text" name="c1_title" data-field="title" class="content-title-input" placeholder="콘텐츠 구분명 (선택 입력, 예: 홍보용 숏폼 / 본편 기록영상)" />
+              </div>
+              <button type="button" class="remove-content-btn no-print" onclick="removeContentItem(this)" style="display: none;">✕ 이 콘텐츠 삭제</button>
+            </div>
+
+            <div class="content-card-body">
+              <!-- STEP 1: 제작 규격 -->
+              <div class="content-step-box">
+                <div class="content-step-title">
+                  <span class="step-pill">STEP 1</span>
+                  제작 형태 · 결과물 종류 · 화면 비율
+                </div>
+
+                <div class="form-group">
+                  <label class="field-label">제작 구분 (영상 / 편집 / 사진 - 택1) <span class="req">*</span></label>
+                  <div class="options-grid cols-3">
+                    <label class="option-card">
+                      <input type="radio" name="c1_prodType" data-field="prodType" value="video_full" required />
+                      <span>영상 제작 (촬영 + 편집)</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="radio" name="c1_prodType" data-field="prodType" value="video_edit_only" />
+                      <span>영상 편집만 (원본 제공)</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="radio" name="c1_prodType" data-field="prodType" value="photo" />
+                      <span>사진 기록 (스틸컷 촬영 + 보정)</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="field-label">결과물 형태 및 희망 분량 <span class="req">*</span></label>
+                  <p class="helper-text">해당 콘텐츠의 결과물 형태를 체크하고 희망 분량(사진은 희망 장수)을 적어주세요.</p>
+                  <div class="inline-input-row">
+                    <label>
+                      <input type="checkbox" name="c1_deliverable" data-field="deliverable" value="shortform" />
+                      <span>숏폼 (릴스, 쇼츠, 틱톡 / 1분 이내)</span>
+                    </label>
+                    <input type="text" name="c1_shortformCount" data-field="shortformCount" placeholder="희망 분량 (예: 30초 / 1분 이내)" />
+                  </div>
+                  <div class="inline-input-row">
+                    <label>
+                      <input type="checkbox" name="c1_deliverable" data-field="deliverable" value="longform" />
+                      <span>롱폼 / 일반 영상 (유튜브 본편, 기록용 / 3~10분 이상)</span>
+                    </label>
+                    <input type="text" name="c1_longformCount" data-field="longformCount" placeholder="희망 분량 (예: 3분 / 5분 내외)" />
+                  </div>
+                  <div class="inline-input-row">
+                    <label>
+                      <input type="checkbox" name="c1_deliverable" data-field="deliverable" value="photo_snap" />
+                      <span>스냅 사진 모음 및 색보정본</span>
+                    </label>
+                    <input type="text" name="c1_photoCount" data-field="photoCount" placeholder="희망 장수 (예: 보정본 50장)" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="field-label">희망 가로세로 비율 (중복 선택 가능) <span class="req">*</span></label>
+                  <div class="options-grid cols-3">
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_aspectRatio" data-field="aspectRatio" value="16:9" />
+                      <span>가로형 (16:9 - 유튜브/발표용)</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_aspectRatio" data-field="aspectRatio" value="9:16" />
+                      <span>세로형 (9:16 - 모바일/숏폼 최적화)</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_aspectRatio" data-field="aspectRatio" value="1:1" />
+                      <span>정방형 (1:1 - SNS 피드용)</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- STEP 2: 콘셉트 및 기획 방향 -->
+              <div class="content-step-box">
+                <div class="content-step-title">
+                  <span class="step-pill concept">STEP 2</span>
+                  희망 영상 컨셉 (연출 방향) · 핵심 내용 · 활용처
+                </div>
+
+                <div class="form-group">
+                  <label class="field-label">희망하는 영상 컨셉 (연출 방향) <span class="req">*</span></label>
+                  <p class="helper-text">
+                    어떤 분위기와 흐름의 영상을 원하시는지, 시청자가 보고 난 뒤 어떤 느낌을 받았으면 하는지 문장으로 자세히 적어주세요.<br />
+                    아이디어가 없으면 전체적인 스토리 라인을 적어주세요. (시작-중간-마무리)
+                  </p>
+                  <textarea name="c1_direction" data-field="direction" rows="4" placeholder="예) 행사 당일의 활기찬 분위기가 잘 느껴지도록 빠른 컷 전환과 경쾌한 음악으로 구성된 1분 내외의 하이라이트 영상을 원합니다. 도입부는 행사장 전경 드론샷으로 시작해 참가자들의 웃는 얼굴과 체험 장면을 리듬감 있게 보여주고, 마지막에는 '내년에도 함께해요'라는 메시지로 마무리했으면 합니다." required></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="field-label">반드시 담아야 하는 핵심 내용 (원포인트 메시지) <span class="req">*</span></label>
+                  <p class="helper-text">이 콘텐츠를 통해 시청자에게 꼭 전달하고 싶은 메시지와 정보(행사명·일정·참여 방법 등)를 적어주세요.</p>
+                  <textarea name="c1_keyMessage" data-field="keyMessage" rows="4" placeholder="예) '누구나 쉽고 즐겁게 참여할 수 있는 마을 축제'라는 점이 가장 잘 전달되었으면 합니다. 행사명(2026 소길리 팜파티)과 일시·장소 자막이 반드시 들어가야 하며, 다음 회차 참가 신청은 공식 인스타그램 DM으로 받는다는 안내 문구로 마무리해 주세요." required></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="field-label">활용처 (업로드 매체 및 사용 목적) <span class="req">*</span></label>
+                  <p class="helper-text">어디에 업로드하거나 상영할 예정인지, 어떤 목적(홍보·기록·보고 등)으로 활용하실지 적어주세요.</p>
+                  <textarea name="c1_usage" data-field="usage" rows="3" placeholder="예) 공식 인스타그램 릴스와 유튜브 쇼츠에 업로드하여 다음 행사 참가자 모집 홍보에 활용할 예정이며, 연말 성과공유회 현장에서도 오프닝 영상으로 상영할 계획입니다." required></textarea>
+                </div>
+              </div>
+
+              <!-- STEP 3: 편집 스타일 세부 요청 -->
+              <div class="content-step-box">
+                <div class="content-step-title">
+                  <span class="step-pill style">STEP 3</span>
+                  편집 스타일 세부 요청
+                  <span class="badge-opt">선택 입력</span>
+                </div>
+                <p class="helper-text" style="margin-top: -6px; margin-bottom: 16px;">자세히 적어주실수록 기획 단계에서 다시 여쭤보는 과정 없이 원하시는 결과물에 가깝게 제작할 수 있습니다.</p>
+
+                <div class="form-group">
+                  <label class="field-label">희망 영상 톤앤매너 (중복 선택 가능)</label>
+                  <p class="helper-text">편집 시 배경음악(BGM) 선곡, 자막 디자인, 컷 편집 속도의 기준이 됩니다.</p>
+                  <div class="options-grid cols-2">
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="trendy" />
+                      <span>밝고 트렌디한</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="cinematic" />
+                      <span>차분하고 감성적인</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="trustworthy" />
+                      <span>신뢰감 있고 깔끔한</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="dynamic" />
+                      <span>현장감 넘치고 역동적인</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="warm" />
+                      <span>따뜻하고 진정성 있는</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="fun" />
+                      <span>유쾌하고 위트 있는</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="touching" />
+                      <span>감동적인 스토리텔링</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="premium" />
+                      <span>세련되고 고급스러운</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="info" />
+                      <span>명확한 정보 전달형</span>
+                    </label>
+                    <label class="option-card">
+                      <input type="checkbox" name="c1_tone" data-field="tone" value="other" />
+                      <span>기타</span>
+                    </label>
+                  </div>
+                  <input type="text" name="c1_toneOther" data-field="toneOther" style="margin-top: 12px;" placeholder="원하시는 톤앤매너를 직접 적어주세요. (예: 초반은 잔잔하게 시작해 후반으로 갈수록 점점 고조되는 분위기)" />
+                </div>
+
+                <div class="form-group">
+                  <label class="field-label">꼭 들어가야 하는 장면</label>
+                  <p class="helper-text">반드시 촬영·포함되어야 하는 인물, 장소, 순서, 컷 등을 자유롭게 적어주세요.</p>
+                  <textarea name="c1_mustScenes" data-field="mustScenes" rows="4" placeholder="예) 1. 이장님 환영 인사 장면 (약 10초)&#10;2. 아이들이 감귤 따기 체험을 하는 클로즈업 컷&#10;3. 단체 기념 촬영 장면과 행사장 전경 드론샷&#10;4. 참가자 인터뷰 2명 (가족 단위 참가자 1팀, 청년 참가자 1명)"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="field-label">참고 레퍼런스 (유사한 영상 링크나 스타일)</label>
+                  <p class="helper-text">원하시는 분위기나 벤치마킹할 유튜브·인스타그램 링크가 있다면, 어떤 점을 참고하고 싶은지와 함께 적어주세요.</p>
+                  <textarea name="c1_reference" data-field="reference" rows="3" placeholder="예) https://youtu.be/... 영상의 초반 오프닝 자막 스타일과 밝은 배경음악 톤을 참고하고 싶습니다."></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="field-label">기타 요청 사항</label>
+                  <p class="helper-text">자막·내레이션·음악·로고 노출 방식 등 이 콘텐츠에 대해 추가로 전달하고 싶은 내용을 자유롭게 적어주세요.</p>
+                  <textarea name="c1_cardNotes" data-field="cardNotes" rows="3" placeholder="예) 기관 로고는 영상 마지막 엔딩 화면에만 노출해 주시고, 자막은 기관 전용 서체를 사용해 주세요. 저작권 문제가 없는 무료 음원으로 부탁드립니다."></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" id="addContentBtn" class="add-content-btn no-print" onclick="addContentItem()">
+          ➕ 의뢰 콘텐츠 추가하기 (콘셉트나 규격이 다른 영상·사진을 추가로 의뢰하는 경우)
+        </button>
+      </div>
+
+      <!-- 4. 촬영 원본 데이터 납품 옵션 -->
+      <div class="section">
+        <div class="section-title">
+          <span class="sec-num">4</span>
+          촬영 원본 데이터 납품 옵션
+          <span class="badge-new">실무 추가</span>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">촬영 원본(클린본 / 전체 사진) 데이터 필요 여부 <span class="req">*</span></label>
+          <div class="options-grid cols-2">
+            <label class="option-card">
+              <input type="radio" name="rawData" value="final_only" required />
+              <span>최종 편집본(완성본)만 납품</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="rawData" value="raw_needed" />
+              <span>촬영 원본 추가 구매 희망 (별도 비용)</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 선택 옵션 구분 배너 (5번 이후) -->
+      <div class="phase-banner">
+        <h2>💡 상세 기획 및 제작 옵션 (선택 입력 / 의뢰 확정 후 작성 가능)</h2>
+        <p>아래 5~6번 항목은 가견적 문의 시 비워두셔도 되며, 제작 확정 후 미팅 전까지 작성해주셔도 됩니다.</p>
+      </div>
+
+      <!-- 5. 행사 성격 및 타겟 시청자 (선택) -->
+      <div class="section">
+        <div class="section-title">
+          <span class="sec-num opt">5</span>
+          행사 성격 및 타겟 시청자
+          <span class="badge-opt">선택 항목</span>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">행사 성격 (중복 선택 가능)</label>
+          <div class="options-grid cols-3">
+            <label class="option-card">
+              <input type="checkbox" name="eventType" value="campaign" />
+              <span>공공 캠페인</span>
+            </label>
+            <label class="option-card">
+              <input type="checkbox" name="eventType" value="education" />
+              <span>교육 / 워크숍 / 강연</span>
+            </label>
+            <label class="option-card">
+              <input type="checkbox" name="eventType" value="archive" />
+              <span>기록 아카이빙 / 성과공유회</span>
+            </label>
+            <label class="option-card">
+              <input type="checkbox" name="eventType" value="festival" />
+              <span>축제 / 행사 현장 스케치</span>
+            </label>
+            <label class="option-card">
+              <input type="checkbox" name="eventType" value="promo" />
+              <span>기업·기관·브랜드 홍보물</span>
+            </label>
+            <label class="option-card">
+              <input type="checkbox" name="eventType" value="other" />
+              <span>기타 (하단 메모 기재)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">주요 참석 대상 및 타겟 시청자 (중복 선택 가능)</label>
+          <div class="options-grid cols-3">
+            <label class="option-card">
+              <input type="checkbox" name="targetAudience" value="kids" />
+              <span>어린이 / 유아</span>
+            </label>
+            <label class="option-card">
+              <input type="checkbox" name="targetAudience" value="youth" />
+              <span>청소년 / 대학생</span>
+            </label>
+            <label class="option-card">
+              <input type="checkbox" name="targetAudience" value="adults" />
+              <span>성인 (2030 직장인 등)</span>
+            </label>
+            <label class="option-card">
+              <input type="checkbox" name="targetAudience" value="senior" />
+              <span>중장년 / 시니어</span>
+            </label>
+            <label class="option-card">
+              <input type="checkbox" name="targetAudience" value="b2b" />
+              <span>기관 / 업계 관계자 (B2B·B2G)</span>
+            </label>
+            <label class="option-card">
+              <input type="checkbox" name="targetAudience" value="public" />
+              <span>일반 대중 전체</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. 제공 소스 및 초상권·저작권 확인 (선택) -->
+      <div class="section">
+        <div class="section-title">
+          <span class="sec-num opt">6</span>
+          제공 및 활용 소스 / 초상권 확인
+          <span class="badge-opt">선택 항목</span>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">제공 가능한 소스 (중복 선택 가능)</label>
+          <div class="options-grid cols-2">
+            <label class="option-card">
+              <input type="checkbox" name="providedAssets" value="logo" />
+              <span>로고 파일 (AI, PNG 등 고해상도)</span>
+            </label>
+            <label class="option-card">
+              <input type="checkbox" name="providedAssets" value="past_media" />
+              <span>기존 사진 또는 영상 자료</span>
+            </label>
+            <label class="option-card">
+              <input type="checkbox" name="providedAssets" value="script" />
+              <span>대본 / 식순 또는 원고 초안</span>
+            </label>
+            <label class="option-card">
+              <input type="checkbox" name="providedAssets" value="guideline" />
+              <span>기관 전용 폰트 / 디자인 가이드</span>
+            </label>
+            <label class="option-card span-full">
+              <input type="checkbox" name="providedAssets" value="none" />
+              <span>제공 소스 없음 (프로덕션 자체 제작 희망)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">
+            제공 소스 파일 첨부 (의뢰서 메일에 함께 발송)
+            <span class="badge-new">실무 추가</span>
+          </label>
+          <p class="helper-text">로고(AI·PNG), 식순·대본(PDF·HWP·DOCX), 참고 사진 등을 첨부하시면 의뢰서 제출 시 운영자 메일로 함께 전송됩니다. (합계 20MB 이내)</p>
+          <div class="file-upload-box">
+            <div class="file-upload-top no-print" id="fileUploadControls">
+              <span style="font-size: 13.5px; color: var(--text-body);">첨부할 소스 파일을 선택해 주세요 (복수 선택 가능)</span>
+              <label class="file-select-btn">
+                📎 소스 파일 첨부하기
+                <input type="file" id="sourceFilesInput" multiple style="display: none;" onchange="handleSourceFiles(this.files)" />
+              </label>
+            </div>
+            <div id="attachedFilesList" class="file-list">
+              <div style="font-size: 13px; color: var(--text-muted);">선택된 첨부 파일이 없습니다.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">대용량 소스 공유 링크 (선택 - 영상 원본·사진 폴더 등 20MB 초과 시)</label>
+          <p class="helper-text">용량이 큰 영상이나 사진 폴더는 구글 드라이브, 네이버 마이박스 등의 공유 링크를 남겨주시면 확인이 가능합니다.</p>
+          <input type="text" name="sourceLink" placeholder="예: https://drive.google.com/... 또는 네이버 마이박스 공유 링크" />
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">행사 참여자 초상권 동의 여부</label>
+          <p class="helper-text">초상권 미동의 인원이 있는 경우 촬영 구도(뒷모습 위주)나 편집(모자이크 처리) 방식이 달라집니다.</p>
+          <div class="options-grid cols-2">
+            <label class="option-card">
+              <input type="radio" name="portraitRight" value="agreed" />
+              <span>예 (전원 동의 완료 / 사전 고지 완료)</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="portraitRight" value="on_site" />
+              <span>현장에서 동의서 수령 및 안내 예정</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="portraitRight" value="no_mosaic" />
+              <span>아니오 (얼굴 노출 최소화 또는 모자이크 필요)</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="portraitRight" value="consult" />
+              <span>확인 중 / 프로덕션과 논의 필요</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">기타 요청사항 및 현장 주의사항</label>
+          <textarea name="additionalNotes" placeholder="주차 지원 여부, 촬영 복장 규정, 특별히 주의해야 할 VIP 동선 등이 있다면 자유롭게 적어주세요."></textarea>
+        </div>
+      </div>
+
+      <div class="submit-area no-print" id="clientSubmitArea">
+        <button type="submit" id="submitBtn" class="submit-btn">제작 의뢰서 제출하기</button>
+        <p class="footer-note">제출해주신 내용은 문화놀이터 공조로 자동 접수되며, 담당 PD가 확인 후 연락드립니다.</p>
+      </div>
+
+      <!-- 운영자 전용 하단 액션 영역 (메일의 원본 열람 링크로 열었을 때만 표시됨) -->
+      <div class="submit-area no-print" id="adminBottomActions" style="display: none;">
+        <div class="secondary-actions">
+          <button type="button" class="submit-btn" onclick="window.print()">🖨️ A4 PDF로 저장 / 인쇄하기</button>
+          <button type="button" class="sec-btn" onclick="copyShareableFormUrl()">🔗 작성된 원본 열람 링크 복사</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <footer class="page-footer">
+    <div class="brand-logo-link">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAYAAADL1t+KAAABY2lDQ1BrQ0dDb2xvclNwYWNlRGlzcGxheVAzAAAokX2QsUvDUBDGv1aloHUQHRwcMolDlJIKuji0FURxCFXB6pS+pqmQxkeSIgU3/4GC/4EKzm4Whzo6OAiik+jm5KTgouV5L4mkInqP435877vjOCA5bnBu9wOoO75bXMorm6UtJfWMBL0gDObxnK6vSv6uP+P9PvTeTstZv///jcGK6TGqn5QZxl0fSKjE+p7PJe8Tj7m0FHFLshXyieRyyOeBZ71YIL4mVljNqBC/EKvlHt3q4brdYNEOcvu06WysyTmUE1jEDjxw2DDQhAId2T/8s4G/gF1yN+FSn4UafOrJkSInmMTLcMAwA5VYQ4ZSk3eO7ncX3U+NtYMnYKEjhLiItZUOcDZHJ2vH2tQ8MDIEXLW54RqB1EeZrFaB11NguASM3lDPtlfNauH26Tww8CjE2ySQOgS6LSE+joToHlPzA3DpfAEDp2ITpJYOWwAAAARjSUNQDA0AAW4D4+8AAACyZVhJZk1NACoAAAAIAAQBMQACAAAAGAAAAD4BMgACAAAAGgAAAFYBOwACAAAAIwAAAHCHaQAEAAAAAQAAAJQAAAAAQWRvYmUgUERGIGxpYnJhcnkgMTcuMDAAMjAyMy0wNy0wMSAxMjo0NDo1OCArMDAwMABBZG9iZSBJbGx1c3RyYXRvciAyNy43IChNYWNpbnRvc2gpAAAAAqACAAQAAAABAAAB9KADAAQAAAABAAAB9AAAAADe03LvAAACQGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNi4wLjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iCiAgICAgICAgICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyI+CiAgICAgICAgIDxkYzpjcmVhdG9yPgogICAgICAgICAgICA8cmRmOlNlcT4KICAgICAgICAgICAgICAgPHJkZjpsaT5BZG9iZSBJbGx1c3RyYXRvciAyNy43IChNYWNpbnRvc2gpPC9yZGY6bGk+CiAgICAgICAgICAgIDwvcmRmOlNlcT4KICAgICAgICAgPC9kYzpjcmVhdG9yPgogICAgICAgICA8eG1wOkNyZWF0b3JUb29sPkFkb2JlIFBERiBsaWJyYXJ5IDE3LjAwPC94bXA6Q3JlYXRvclRvb2w+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgr4XS1UAABAAElEQVR4Ae3dB5gk533f+X91nhx2dmdnc97FIiyABQkSgAgSJASCsg2SoiSTMmVJ9nMKPvkc7iTrzvfcOcj2nWU/tvVY9iPJFkU9psijJFKQGAQQpBBJ5AwQYXOaDZND5677v9PT6J7Zng2zVdVVb3/reXq7p0PV+37ed/vXVfVWlbN9ywOuMCGAAAIIIIBApAVikS49hUcAAQQQQACBBQECnY6AAAIIIICABQIEugWNSBUQQAABBBAg0OkDCCCAAAIIWCBAoFvQiFQBAQQQQAABAp0+gAACCCCAgAUCBLoFjUgVEEAAAQQQINDpAwgggAACCFggQKBb0IhUAQEEEEAAAQKdPoAAAggggIAFAgS6BY1IFRBAAAEEECDQ6QMIIIAAAghYIECgW9CIVAEBBBBAAAECnT6AAAIIIICABQIEugWNSBUQQAABBBAg0OkDCCCAAAIIWCBAoFvQiFQBAQQQQAABAp0+gAACCCCAgAUCBLoFjUgVEEAAAQQQINDpAwgggAACCFggQKBb0IhUAQEEEEAAAQKdPoAAAggggIAFAgS6BY1IFRBAAAEEECDQ6QMIIIAAAghYIECgW9CIVAEBBBBAAAECnT6AAAIIIICABQIEugWNSBUQQAABBBAg0OkDCCCAAAIIWCBAoFvQiFQBAQQQQAABAp0+gAACCCCAgAUCBLoFjUgVEEAAAQQQINDpAwgggAACCFggQKBb0IhUAQEEEEAAAQKdPoAAAggggIAFAgS6BY1IFRBAAAEEECDQ6QMIIIAAAghYIECgW9CIVAEBBBBAAAECnT6AAAIIIICABQIEugWNSBUQQAABBBAg0OkDCCCAAAIIWCBAoFvQiFQBAQQQQAABAp0+gAACCCCAgAUCBLoFjUgVEEAAAQQQINDpAwgggAACCFggQKBb0IhUAQEEEEAAAQKdPoAAAggggIAFAgS6BY1IFRBAAAEEECDQ6QMIIIAAAghYIECgW9CIVAEBBBBAAAECnT6AAAIIIICABQIEugWNSBUQQAABBBAg0OkDCCCAAAIIWCBAoFvQiFQBAQQQQAABAp0+gAACCCCAgAUCBLoFjUgVEEAAAQQQINDpAwgggAACCFggQKBb0IhUAQEEEEAAAQKdPoAAAggggIAFAgS6BY1IFRBAAAEEECDQ6QMIIIAAAghYIECgW9CIVAEBBBBAAAECnT6AAAIIIICABQIEugWNSBUQQAABBBAg0OkDCCCAAAIIWCBAoFvQiFQBAQQQQAABAp0+gAACCCCAgAUCBLoFjUgVEEAAAQQQINDpAwgggAACCFggQKBb0IhUAQEEEEAAAQKdPoAAAggggIAFAgS6BY1IFRBAAAEEECDQ6QMIIIAAAghYIECgW9CIVAEBBBBAAAECnT6AAAIIIICABQIEugWNSBUQQAABBBAg0OkDCCCAAAIIWCBAoFvQiFQBAQQQQAABAp0+gAACCCCAgAUCBLoFjUgVEEAAAQQQINDpAwgggAACCFggQKBb0IhUAQEEEEAAAQKdPoAAAggggIAFAgS6BY1IFRBAAAEEECDQ6QMIIIAAAghYIECgW9CIVAEBBBBAAAECnT6AAAIIIICABQIEugWNSBUQQAABBBAg0OkDCCCAAAIIWCBAoFvQiFQBAQQQQAABAp0+gAACCCCAgAUCBLoFjUgVEEAAAQQQINDpAwgggAACCFggQKBb0IhUAQEEEEAAAQKdPoAAAggggIAFAgS6BY1IFRBAAAEEECDQ6QMIIIAAAghYIECgW9CIVAEBBBBAAAECnT6AAAIIIICABQIEugWNSBUQQAABBBAg0OkDCCCAAAIIWCBAoFvQiFQBAQQQQAABAp0+gAACCCCAgAUCBLoFjUgVEEAAAQQQINDpAwgggAACCFggQKBb0IhUAQEEEEAAAQKdPoAAAggggIAFAgS6BY1IFRBAAAEEECDQ6QMIIIAAAghYIECgW9CIVAEBBBBAAAECnT6AAAIIIICABQIEugWNSBUQQAABBBBIQBBtgY8O52VTZznalaD0Kwq4+sp0MSZnczF5aSIp2bKz4nuDeOHWwYL0J02pmGwSyGm/Mn3s0Gxcq9XaPmaTa9B1IdCDFvd4eZ/YmJM71xY9niuzC6NAoSLy6NmU/M67XXJi3nzxBj/9wq55OTBQCn7BLDEQgQt5R/6/Yx3yZb0VKgR7IOgeLoRN7h5iMisE/BRI6f/We0cK8kd3TshPbc36uSjm3aYCQ2lXfnnPvPzO7ZMylGbLX9S6AYEeoRZLxFzpSMmSW5wWjFALelPUhLb5P9w3J7+0e86bGa4wl5iuoMW1zzXeHFbaVtCy6+l9vWX597dOS1rbnyk6Amxyj05byf3vE7nnpqX/wfae0wrkIlQJiuqZwN/ekZV3ZxLy8Gjas3k2zugzd4p88LrGZ0S2jerfhaXP8ZedAns01D+/fV5+71CXnRW0sFas31nYqFSpfQT+wb5ZycSX/shrn9pTU78FfnJrTuIO/ctvZ6/mT6B7JRnwfOIDIokhHY+qm+CZ2ldgje7z/LEN/m+iifWKmJvDNr226my9ekTDDX0MgoxKoxPoUWmpZeXM7HSk47qYxLvZqbmMpu3+vHvY/23gXfsd6ToQkxhbX9uuf63vYHBcVBqdQI9KS1FOBFYQ2NfLGtQKNDztgUBHa46Q9KDk7TcLAr392pwaWyZgNoumGI1sWatSHQSuXoBAv3ozPoFA6AQ4vCh0TUKBEAhcgEAPnJwFIoAAAggg4L0Age69KXNEAAEEEEAgcAECPXByFogAAggggID3AgS696bMEQEEEEAAgcAFCPTAyVkgAggggAAC3gsQ6N6bMkcEEEAAAQQCFyDQAydngQgggAACCHgvQKB7b8ocEUAAAQQQCFyAQA+cnAUigAACCCDgvQDXTvLelDkiYK1AOR2TYoc96wGxsivxgreXB42yT0UpypVq983O6WO9LkuWa7NE5v8zgR6Zpmpe0EJ3THL9XD2huU54nk1kK5LIexscrajd8bv7WrFY35Y58G5WNj496+n8335gUNx4NK+CODYtMjpR5fjqf3fl5BFPaZiZzwIEus/Afs/+zPt6/F4E8/dAYPjFWVn7RtaDOTELBBBAoLmAPdvOmtePZxFAAAEEEGgLAdbQ26KZqSQCVy/w4LOu/OWL1U3Hf3u9SLrj6ucRpk90pkQ2r/O/RG+dEnEjuqrkRn+vkP8NHOIlEOghbpzlRfvms458+7nqsz/T40jf4PJ38HcYBPq7RDasCUNJrq0MubwjuXx1HsWSSDzig6NKi4O9rk3l8p82A8nM4DImBIIWINCDFr+G5ZnRp7XvVPOFwa/pa8D08aM2fpmfPeNKRyaaA71qTd3bKbJVf2yZyUlXxEn5sxp97rQGerSpFowKiz/mFv7gn0gIEOiRaKaLC3nqqCtT4xc/zzOtFxgZEFkfq66ixbpFYj4FR5A1/dMvmISK9mrntmGRPX+jWof0NpHUZn8E/+h3XClFm8ofGObquwCB7juxPwt46Gv+zJe5XrvAwV0iuz5SnU/mOkdiQ9c+T+aAAAIIXE7An21Ol1sqryOAAAIIIICApwIEuqeczAwBBBBAAIHWCBDorXFnqQgggAACCHgqQKB7ysnMEEAAAQQQaI0Agd4ad5aKAAIIIICApwIEuqeczAwBBCIl4MPJZiJ6XZZINRuFbS5AoDd34VkEEGgDAceHswAlF89B0AZ8VDFkAgR6yBqE4iCAQHACMR/W0C04j1BwDcCSPBUg0D3lZGYIIBBWgViT07HGC94nek/S+3mG1ZRyhUuAQA9Xe1AaBBDwSSDe5Nsunvf+HK19Se/n6RMJs7VMoEkXt6yGVAcBBBBQgXj84qBNZL1fm16jF35hQqAVAgR6K9RZJgIIBC7QkWrY5u5UH6fmatcv9K44Ix3ez9O70jEnmwUIdJtbl7ohgMB7Ap3phjX0xZHoyVnv16Y3dHg/z/cqwQMELiFAoF8Ch5cQQMAege6Oel0cXUNP6tp53IfrnG7vZg29Ls2jIAUI9CC1WRYCCLRMYI1em/69KSmSniy996eXD3Z1+zNfL8vIvOwUINDtbFdqhQACywQGuuub3GMJkY4xf4K3L+UK+9GX4fNnIAIEeiDMLAQBBFotMDxYHxTnpEW6zhd9K9KBfv/m7VuhmXHkBQj0yDchFUAAgcsJ9GREzM1Mrq6oxxKudFzwL3RvHvBv3tVa8C8CFwsQ6Beb8AwCCFgmsGmoXqGYBnuXbm6P+7PFfWFBHxwi0OviPApKgEAPSprlIIBAywS2DtcXHevUtfXThfoTPjwa1kPXdjI4zgdZZnkpAQL9Ujq8hgACVgjsXF8/Njze5Ujv8bzv9bpnvf/L8L0SLCBSAgR6pJqLwiKAwNUKpPXc6tvW1z/VUy5Kaq4e8PVXvH10L4HuLShzu6wAgX5ZIt6AAAJRFtizQSTRcKm1NeeCWXPe0lURRrtHuedEr+wEevTajBIjgMBVCNy4vX64WjJVkYHjuav49LW99VObg1vWtZWUT9sgQKDb0IrUAQEEmgok9QprN22rvzRczEsswDOzmv3oa/RHBBMCQQgQ6EEoswwEEGiJwA3bHDH70M3k6AHow2eDXWNO6TfsZ7dlW1J3Ftp+AgR6+7U5NUagbQTu2FdfO16bzUsqV/87KASz2b0vGfxyg6ofywmPAIEenragJAgg4KHA+gFXdm2o7j83a+ebp1qzptylZ6X7uR3zHtaMWSHQXIBAb+7CswggEHGBew7UB8NtmM5Kqti6teRPb8nJps4Ad95HvO0o/uoECPTVufEpBBAIsYC5VOqtO6sFTJXKslEDvZWT2Zf+j/fNtrIILLsNBAj0NmhkqohAuwl8/DZX4rHqYLjtE3Oig91bPn1wbVE+OhzMMfAtrywFaIkAgd4SdhaKAAJ+CWxc48rBXdW5D83lZTAbngul/Or+WRnkMDa/mr7t50ugt30XAAABuwQ+facjju4+N5vat4/PhapyfSlX/ukNM1qmEGwyCJUMhfFCgED3QpF5IIBAKARu3yuyY9hdOOZ874UZSZiLn4dsukM3vf/M9tbu0w8ZCcXxSIBA9wiS2SCAQGsF+rpEHri9vt+8uxDeUeW/sHtePjDk7yVcW9saLL0VAgR6K9RZJgIIeC7w2bsr0pEWGdER7cOz3g4+y3fHpJSqHwZ3rYWP66x+48CMbO8qXeus+DwC7wkQ6O9R8AABBKIqcO/Nruzd6Mia+bxsnfT+JC7nb+ySC/s7PeUxJ5z5T7dNc3y6p6rtPTMCvb3bn9ojEHmBPRtc+fhBkf5sQXZdmBXv1qOrNAVdO5/clpaxvR1SzHj7lbk2U5Hfft+UbOgI7+6ByHeQNqqAt72zjeCoKgIItF5gXZ/Iz35UZDBfkL3nZ8SPL7Tz1+uauV5P3U04cv5Gb9fSjeC6xVAfyRDqre9R0S6BH/0/2iKUHgEEIiHQkxH5ux93ZVM571uYm7XziR26oMVpfFdG8j3x2p+e3a/v0DX190+xT90z0facEYHenu1OrRGItEAm7covfaIit7jzsnts1pc1cwN05qCeQ1bXzt+b9PHp9+tzPkwjGuq/94EpuYPR7z7otscsCfT2aGdqiYA1Ah16cpZf0TXzuyuzC1dQa4hbT+t4bm1KprqTIuWlx7LPrU/pWrsOp/dhMgPlfvPWafncNu8H9vlQXGYZMgECPWQNQnEQQGBlAbOZ/Vd/rCwfL0/JGh0E59dU1l8JT2/pkuMviuRHlwa6Webord1SSvvzU8JsEPj7e+fl/7pxRjrjrbtCnF+2zNc/AQLdP1vmjAACHgqMDIr85ieycm92SrqK/g4ge2Nzp7xyLC5f+pYjheMa6KWlwVpOx+T0+/zZ9F4ju39DXr5056TcNujfD5fasri3Q4BAt6MdqQUCVgvctbMsv3fXlByYm/P9dK4XehLypgb609915fCoyFOvaqifvnhtfHprRswgOT8nM1jut/RYdXPp1fTi1eP8XB7zjrYAgR7t9qP0CFgtoAeLyT/5YE7+ze5JWZP3/6ppBT2F2/f39so7b4mcO1MN8b94xpGxt0UqhaVr6Qb+zG3dkuv3ftR7Y6OaC838xNacrq1PyD1cfrWRhsfLBAj0ZSD8iQAC4RD4yMaCfOO+Sflk76zva+W1Gj+/q1tmEnF59Ju1Z0TMrvqvPu5K4XD9udojV38AHP+RXiknas/4d7+xsyL/6uYZ+d3bJ+XGfv9/3PhXE+bslwCB7pcs80UAgVUJ7Oopye//yJT86xumZVD83VfeWMDDwxk5vjYjzzzmyvRE4ysirxxx5LHHHClOXLyWXuhNyMk7egO7IOqN/SUN9Sn5VwemZWc354Jf2lLt/VcAvyvbG5jaI4DAlQncMlCUz+/Mygd1EJjZzBzkdK43Kc/t7JbJ8YoGulnyxQX406dc2blNL8/6Ub08q7m6SsM0szktowe7ZOT54K6/fs/6gpjb0xeS8uVjHfJ9vW9W7oZi8tByAQLd8gamegiEWSDhuPKjI3n57Las7O4Jbm280WRGz8/+5HW6hq3Hi333z3Vf+QrFKFUc+W/6+q9vrUjP3ov3m4/t65TkbEWG3gr2Wue3DxXF3I7MxuUrxzLy8Gha5kpsfG1s43Z5TKC3S0tTTwRCJHB9X1E+tj4v92mYD+pZ31o1FfT87I9d3yeFZExe+kFFjr27dM17ebnOTYl84Y8c+cW/50py7cXvNWvpyfmy9J0I/lCz7d1l+SfXz8k/um5OnjqfkofPpOUJvc/rDxGm9hAg0NujnaklAi0X2K37xk2I36u3DTrAq9VTUVdiH9vfJ7MdCblwriKPfvvKSvTyYUe+9mVXPvN39aywHcvCUvcVnLirV5zHp6X3ZPChbmqQ0np9eLiwcJvXXeyPn0vLU7o5/rmxlIwVWHO/slaO5rsI9Gi2G6VGIPQC6/XqYQcHiwu329YUF64qFpZCmy3Sj13fL2O677ysofeNLzsrbmpvVuaHnnVkRC/betendK+1ObVb46R/m5Hvm5+YbsmaemNROvUb/j49QY25memobpZ/bjwpz+vt5YmkjBPwjVyRf0ygR74JqQACrRcwJz0xo9P39VZvt2qQm8OswjhVw7xPLvSZQWQij/yFyPj5qy/pFx90ZN2IK3vvWBboZlYa6mZNXZ6ckb7j1TC9+iV4/4ltulne3D6zJbcw8/G8I+/OJuTQTFzendF7fXx8LibzZdbkvdf3f44Euv/GLAGByAtk4q4MpCoyqDdz/e715tZRli2dZdmqATGifwc9Mn01qEUdnf64DoA735da+PjzT7ry+vOrmZOIq7v+/8Pvivxapyvbbl4h1O/sWTjn+5p3qgG6uiX59ykzfuH96aK8X7egNE4zRUdGszG5kNfLx+pa/JG5uPzhEe+vBd+4TB5fuwCBfu2GzAEBqwU+tSkrv6aDraI+zevOZTMAbqqr+rV36E1XHv/La6tVUa/i8m/+gyv/9H8X2bSneaifeX+PFPQa6utfmGtyMNy1Ld+vT/ckXelJlmX34nkAzKZ6At0vbe/my3YV7yyZEwJWCkRhzfty8JOdcfnOgf73wvzcGVe+9dXqWvblPnu5183hbL/x/7gyenTlXQxj13XK8Q/1SuXio90uN3teR+CKBQj0K6bijQi0n0BXRje1+3tRMd9RR/uT8shN/ZJNV9N0/LwrX/+iSHHpVuZrKkdRN1H/83/pyqlDK4e6OfnM4fsGJK9r60wI+CHAJnc/VJknAhEV2KCXKP3c3a50dYh0d7iS0MFdwzNamWWnQo1C9czR7eYyqK9t0X2/i5sZJsZc+ePfF5mb9b4GBd3X/M801P+3X3Vl93VNNr/rInMDOvDs/gHZ8MyM9B8Nz2A57zWYYysECPRWqLfxMh+798LCcbJ+EHzjVFr+xWs9fsy6beaZ0UFSG4dq1W0eSrVXw3xfSDry1J5eOTtQHfxmympO6/on/92ROfMDZXF6XPujnlPGs+n5saT8yv/bK7/8KyIHbnFqvyOWzL+iZTt5Z6/MDWdl5LlZia1wZrolH+IPBK5AwMOufAVL4y0IIBAdAd0y7OjlvmP+XvLbc48LA0n51s0DS8LcHJb2VQ3zmWnPF3fRDCs6UO63f0vke9+rSOkSYT2xq0Pe/cSAzK2tHj530Yx4AoGrFGAN/SrBeDsC7SKQ2iqS3hiT1Nu6pn4m/LU2lzB9dXu3vLVOf4E0jOQ7dUT3mf+RXv40G9wWB3M++C99wZFTJ0Q+9ZOu7r5ovmxzpbYj9/bJoB7WNvzinMRLZkcBEwKrEyDQV+fGp65AwOyLXdu39I3xNtht2Pyre6kDf3krMKFruU9u65G5xYFvtbm/9Yor3/5TV88C58hPf9iVIT3XS+MU87k/PvqIjn7XrQM/83Miwzo+oelxa/rjY3xPh8xsTMnIs7PSe6o1p4xtdOFxNAUI9Gi2WyRKPaJfYJve2x9bLbJzPBJFv6ZCso51TXxX9eGiXinth7u65I3+i/cLmOuaP/mwmV31J9bIgDSMD6guJoj++NYrIv/x37ry2Z/Vs8rt1C0eK2xhL3bF5fiH+6RrtCDrn5+VjslLbK+/KiXe3C4CBHq7tHSL6+ms8CXW4mKx+IgKmOO5z+zulOfXdkrWXbpNJK9XLzVr5Yd/uHLlgu6P506L/Jd/58jHP+XKHXc6ska3FDTsFVhS0Ln1KTmk+9b7D+dl+OU5SWZXPhRuyQf5o+0FCPS27wL+A8R0oHHX7YvjL4/o8vh+8h/d0iWYrR+TW9PyyvYuGS1pqi/bHDJ60pVvfEVkenJlAEdH8ne/Xz9rpgD7Y0E37z/4Zb1AymFX7n9AZPOwI5n6IPxqeWr/atpP7szIlNZ18N2sDL2RJdhrNtyvKECgr0jDCwggEBYBsxI+uS0tx3Z0yuFSQop6hbTGydUTq7/wfZEnHtLfiyHfUv3KMyIndKDefZ90ZP9+kXX9IonF3xeNdTKPXb1e+9i+Thnf3SH9R3Iy9Pq8pGf5Rbzcib+rAgQ6PQEBBEIrUNENO5M7MnJyj546tRCXuSbXOBnXk8U8/DWR08dCW42LCjZx3pEv/64rB24Xufs+V0aGYgsD9pwVDiR29aIy5jC3CbUw11kffCer+9qLTcfYXbQwnmgbAQK9bZqaiiIQHYFCl17la1dGzm/rkNPmil9Njh+vVCrywlN6hdLvmLXypfvRo1LTl5+WhX39H/kxHTB3g7NwVIg51e5K+9fNZVmnt6QXbqmZsgxosA8czkkiv2zfQ1QAKKenAgS6p5zMDAEEVitgNqvPbEjp5uWMTA6nZGxGD+ca17BuklWnj7vyvW84YgabRX2amXLkwS/pESHbXbn74yIbNlUHzQ3qSQ9jK6yxmzqbK7idvbVbzh3oku4zBek7lpcePeQtXmwCFnUkyn9FAgT6FTHxJgQQ8EPARM/8uqRMLa51ZvU8rBem9NTxGtS6W/yiaWpCL3n6kCvvvBbNNfKLKtTwxMkjejKa/yqy74Ard37MkT49zG6NhrpZY09e4pvabI6f2ZReuDllHfB3WsP9eH4h5FlzbwBug4eX6CZtUHuqiAACgQuY/eLzeiKYab36mNl8XOqIybxuMh7XNfLp+eZBns+68sxjjg58q54kJvBCB7RA8yPmzZdE3nq1Ijfe5shtdznSq4PmevRiOSbYzf2ldpwvhLu6miu7mV9EGT2W3ay9d5nb+SLnjQ+oHVu1GAK9VfIsF4E2ETAr2uYqY7MjSZnVY6xNmJvR22Y0+qQGuFkbz+nlR5tN83M6ev0pEbOvubCwn7j5+5p9NsrPmTEBps6vPOvKdQdE3vcjujtirSNJHQ3f11W9ZVKXqaHuiDfu5nZhv15xTvddZCZL0jG2eBsvLgS+02RLyGXmzMshFSDQQ9owFAuBqAqYAW3ZNUnJDib0Xm96X0lVdwabNdBZPfGLOU7crI032z9u6j075cpzT1YDrVxqjxBv1t6uHqH2xovVtfZte1y56TZXtu0VuTCtZ5zTb28T7r2a1ZcNdzNzHVCXG0wu3CZ2V5dmNtEnZ8uS1gF2ZpDdwk3/Lk1XJKP74lOFiqxwRF2z4vJciwUI9BY3AItHIGoC5ixtJT3lalE3lZuBWQu37up9Xv+upJeO5FoIcQ1vE+DTGuY6OL3pZI4lP3nElZefceSQnuWtejx5+4Z5I5IxPPKWuTnS0+fKjQdFrtdwL+iPnfM65sAcx96tZ7/t0lu3bpZf6bj2xnmax2YTfaEvsXBrfO31Y9W/Dr3pyne+UpGuBKvxjT5hfUygh7VlKBcCIRGY3mw2kw9IKe1IWcPahMAlJ/3uzxZF5jS8zXHjc3qGNBNIK025eVdee0Hkted08/vYZea90kza6HkzKv6p77ry/e+ZkfEV2aOHu+3WE9SUdDP95FwVIq2nWu7U3ehmzb1Db5mUq4fCrc52vqxjHEJ+sp42av5LVpVAvyQPLyKAQKkjrgPXVnYo65d9Vi8QZm45DW8T4OUV1sJrc8npILd3Xxd5W2/HD2vgX+b9tc9xXxcwP5JOHHb0JvLdP9dTyephb7uuF9mmm9P7BhzJ64+q2mTC3IS8uZlN9bV78zjONvUaU+TvCfTINyEVQCAAAU2Poq4BFjQkCnra1YWbPjZr4stPw7pSaaYnXTn2riPvvO4S4ishrfJ5E+7mh5G5malvwJUtu0S27NTbdl1D79T95+YHl96WT2bFPa57SRJ6M+F+pZvrl8+Hv1svQKC3vg0oAQKhERifduRPnqyuZe+a1TU+/ZI3a+ClinPJzebNKmDWwk3AnDzkytFDMZnSk8Tounizt/KcxwJTEyKvPlu9mVn36aWMhze6MrxBZETvh0Z0jT1T3QRvfgyUTBubzeoNa/UeF4nZBSBAoAeAzCIQiIqA2Qf7xBvV0vbscWRTkzW6ZnXJ51w5d0bk7ClZOHubuZ9cCHDzbhMcBHkzt6Cemxp3F35Qvf2qWWI1yDu6KjKwRk9go2E/MGjuXenq0UPbdG0+oyPnO3QEPVO0BAj0aLUXpUUgcAEz+ryQc2ReB69ldaT6jI6qNmvbE2PV0J7W+9mZwIvFAq9RIDvnSFZ/wJ0+bmZU+8FVDfvarGNx8/zS52qvcR8+AQI9fG1CiRAIhcAzj4o8+1hFcvNmc3vtCz8URaMQAQlE9aI3AfGEbjEEeuiahAIhEA6BnK6Ns3YWjragFAhciYAOeWFCAAEEEEAAgagLEOhRb0HKjwACCCCAgAoQ6HQDBBBAAAEELBAg0C1oRKqAAAIIIIAAgU4fQAABBBBAwAIBAt2CRqQKCCCAAAIIEOj0AQQQQAABBCwQINAtaESqgAACCCCAAIFOH0AAAQQQQMACAQLdgkakCggggAACCBDo9AEEEEAAAQQsEOBc7i1oxLvX5Vuw1OAXubHkyqCeD9zRS3CmT1R/Ozo+XuNjOFORu9bmpeLqxUS0uhX9p3Zf0b9dfb7xudprrl5Nyjxffc/Sz1302sJ8zHvqy3jvc4uvpRxHYjpDfUt1puYNTAgggIDPAs72LQ+Y7zWmAAV+cN+FAJfGotpB4KWJhJQrXObyUm29ea0r6aS+Q39bxnurVl1ni55eHHSm6Mjb06wnNWuH09mY/MbrPc1e4jmPBOh5HkEyGwRaKXDzQKmVi4/Gss2WktrGsaw/Re5JunJwTdGfmUd8roOz8YjXIPzFJ9B9bqOOlEiCfuyzMrNHAAEEECDQfe4Dn7vblRu2LVvI8WV/8ycCCCCAAALXKMAo92sE5OMIIIAAAgiEQYBAD7AVUutFzI0JAQQQQAABrwUIdK9FV5qfDqpN744t3FZ6C88jgAACCCCwWgECfbVyfA4BBBBAAIEQCRDoIWoMioIAAggggMBqBQj01crxOQQQQAABBEIkQKCHqDEoCgIIIIAAAqsVINBXK8fnEEAAAQQQCJEAgR6ixqAoCCCAAAIIrFaAQF+tHJ9DAAEEEEAgRAIEeogag6IggAACCCCwWgECfbVyfA4BBBBAAIEQCRDoIWoMioIAAggggMBqBQj01crxOQQQQAABBEIkQKCHqDEoCgIIIIAAAqsVINBXK8fnEEAAAQQQCJFAIkRlaZuiVPgZ1TZtXauo44qYm18TfcovWea7WgF3sb+7FRHzuKj3TP4KEOj++jad+xufXdv0eZ60V2D4xVlZ+0bWtwr+8NNrpJLml6JvwMz4qgVeP1b9yBMPufLs41f9cT6wCgG+AVaBxkcQQAABBBAImwCBHrYWoTwIIIAAAgisQoBN7qtAu5qPfP0HMfn2ixVx9KfT53dezSd5b1QFejpE1vUHW/qjZ3UfZTLYZbI0BBAIlwCB7nN7jM3oaJAZR2JxkVzB54Ux+1AIpFsQrLmiBrqPg+5CAUshEEDgkgIE+iV5vHvRjPKcmeIb1zvR8M4ppc1c6amWz0m6unXG/z1bs9OuFOL0r/D2ivYtWT7fvnUPuuYEekDi5tCN3/vNgBbGYloqcHCXyPqPVMM1c50jySH/i/OHv6U/GEv+L4clIIBAeAX8X3UIb90pGQIIIIAAAtYIEOjWNCUVQQABBBBoZwECvZ1bn7ojgAACCFgjQKBb05RUBAEEEECgnQUI9HZufeqOAAIIIGCNAIFuTVNSEQQQQACBdhYg0Nu59ak7AggggIA1AhyHbk1T2leRwVRFNneWZZPe1mYqsjZdkTV660m40p2sSJfeJx2RRMyVhN6HZYrrWQHTJ6ulcc7ovZYtVuakL2FpH8qBgK0CBLqtLRuxem3oKMtN/UXZ11uSfX0l2dVd1tCOcAjWrv1cu49Ye1BcBBCIngCBHr02s6LEvbqG/cGhgt6KcutgUdbpGjgTAggggMDqBQj01dvxyasUGNBN6PcM5+Xekbzc2F+SeIg2k19lVXg7AgggEDoBAj10TWJXgWLiyh1rC/KpzTn5gK6NE+J2tS+1QQCB8AgQ6OFpC6tK0hmvLIT4T23NsTndqpalMgggEFYBAj2sLRPRcvUkKvK3tmflM1tyC6PQI1oNio0AAghEToBAj1yThbPAaT107Ke3ZeVzGubdejgZEwIIIIBAsAIEerDeVi7tY+vz8r/sm1s4TtzKClIpBBBAIAICBHoEGimsRVyfKcs/u2VWDvQWw1pEyoUAAgi0jQCB3jZN7W1Ff3ZvVv7O1rmFM7V5O2fmhgACCCCwGgECfTVqbfyZ9XoGt397+5zsThTaWIGqI4AAAuETINDD1yahLdGP31iU/3nTjHRUOKtb2BqpUOEsPWFrE8qDQNACBHrQ4hFc3kC3K79+V17ulFnRw8uZQiYwW3QkT6CHrFUoDgLBCxDowZtHaok373Dlf70lKztn581Fw5hCKPDOjF7ejQkBBNpegEBv+y7QHCCmGfHjH3Tls+vnZMNMrvmbeDYUAo+eS4eiHBQCAQRaK0Cgt9Y/lEvv6RD5uXsr8pHkvIwQ5qFso1qhpgqO/PkpAr3mwT0C7SxAoLdz6zep+7p+V37hfpFbioR5E57QPfWf3+6SuVIsdOWiQAggELwAgR68eWiXuHWdyP/0cZFduSyb2UPbSvWCvTGYkQdPZepP8AgBBNpagEBv6+avV377sOiaeUU2FgqydWq+/gKPQidgzpT/2pZO+a6j+0aYEEAAgUUBAp2uINsWw3ywUpadY7OIhFTA1cMMzvSn5NWtXTLZnZCzz3ARnJA2FcVCoCUCBHpL2MOz0OEB3cz+o6506dXS9p6bkbDvjS2l9Jjr3rgUeuJS6ohJKROTSsIRNx7ug+rihYrEC1cfwOYTZa1zNhOX1ypJycXrLfTO6+bVcNc7PD2dkiBgvwCBbn8br1jDvi6RX7zflY60K7vOz0q6HL6zxhQ1tGc2pGRufVLmh5JS7G6/Y65zepbd4+dFiqV6U46edOXEYcK8LsIjBBAg0Nu0DyR0jfzv3CvSr6E+Mp2TgVx4rphW1l45tT0jEzsykl2jfzjtGVyViisXph29ibgNK/flkivf/Ys27bhUGwEEVhQg0FeksfuFn/qQyOa1IpliWTaHZBBcXjejj+3tkMkdaakkFzcta5IVdM20VK7ezGnkTbg15FvoGiqmvz8Sq9yQoBm+sCY+nxeZzTmy/LT5FbciD3/dkbOnQldtCoQAAi0WINBb3ACtWPzte0Vu211d8o5xPT97i9PRbFY/d1Pnwhp5Uc9JPqcnppvXtdKshlq+pPvHW1y+VrRRs2Xms658848dOfp2s1d5DgEE2l2AQG+zHmBOHPPjd1QrPTSXl758w47ZgC0quhJ+/oZOOb1bw1zXRqdHNcDDs+U/YI2VFzc/58obL4o886greXViQgABBJoJEOjNVCx9zuyK/um7HUkmXInptt0tk6073jzbH5e3D/bKqVhCZs5eGrxcdmXsnMjEmO5bH9dN0TMiuTndNK3hr0fahXoNvrNbJJm6dP2avWq2SmS1eaYn9EfPmVodCfNmVjyHAAJVAQK9jXrC3TdoiOvZ4Mw0MpNtyah2s/X8zK4OeXZjl+TyzQPK7Cc+c8yRY+/q6O7DImdPuxrczd+7UBn+QQABBBAQAr1NOoE5RO3+g9XKxnWk1QYd2R70ZDaxv7S/R97p19OV6pr18ml8zJVXnxF582VdO9U18PpEmNcteIQAAgg0FyDQm7tY9+xff79IKlmtlgnzRMAjzYpJRx7f1yvn+y7e/nzoTVdeelrXxg/V2AnwmgT3CCCAwJUKEOhXKhXh921Z58rBXdUKmH3nw7PBrp3nNcwfubFfZjqXdrfTx0Ue/bYroycijEvREUAAgZAILP2GDUmhKIa3AvcfNGu81WO/1urI9qQ52DmgqainZH30+r4lYT4z5cpffcOVd99kTTygZmAxCCDQBgIEuuWNvGO9yL5N9QBfbw7yDmgy49ge398rE92L2/p1uW+97MojepYzDr8KqBFYDAIItI0AgW55U99zUz3Mu/Ug785Ck9FoPhk8t6vnvX3m+ZwG+Z9roL/i08KYLQIIINDmAgS6xR1gXZ/I/i31Cg4X9NRrAU1H1qXl6LCOZtdpVjexf+0PRS5c5njzgIrGYhBAAAErBQh0K5u1Wqkf0ePO37uuiY5qH5zVy3YFME11xOX5nT0LSzo/6sqfaZjP6KlcbZz6knpZVJ+GAphtKxOFxXPa24hHnRBAwFMBAt1TzvDMzFxN7eDOenn63aIkivXN7/VXvH1klvD0nh4pa8qZS3z+8Rf0jG7BbRjwtjJXMLef3zkvP7XVv3EJ/+fLPfLwaPoKSsJbEECg3QX4+W9pD7hph6PXOa9XbkiCOUn6Yd3MPtGTlLGzupn9i3aHudH9/UOdMqcXkPFr+pW9c5Jp9dVz/Koc80UAAU8FCHRPOcMzs1t3NKyNx0V6J/3f3F5IOPLKti6ZnpSFMM9lw+PhV0kmizH5H0c6/Jq9rMtU5DOb2wDSN0FmjED7CLDJ3cK2TutRYns31yvW2VuW9BG9kLjP0xubOiXrxOTP/odr5T7zu/aLfPjGhh9Ki55xNyPFqawkfbpK++e2ZeWrxzskr5eWZUIAAQRWEmANfSWZCD+/f6tIoqFlBxz/L5FqTiBzaH1GvvdNVy7oZVBtnJ7Ti8WY3Rhrepfe+vscOd/TsH/D48oPpl25d8TigQgeezE7BNpVoOFrv10J7Kv3dRvra5ExPXV615z/gW7C/PUfOvLqs/Z51mqU070WD+t1yc0U73Ikphe8qd3Orcv4tH5eXd7f2OjfwLvqEvgXAQSiLsAm96i3YJPy71kI9Orm2cRakc4f+hvoZmP+qwMZeeRL5oeE3ZuFH39d5CM3OTK8T7eCrG38PRyT2fmk9JzxZ/DhTQMlWZ8py2hOB0QwIYAAAk0EGr+RmrzMU1ETMCeT6dO1x9qUHHAlPeVvoJ8dSMlDj8Xb4nSuZd2P/dQbeuraY/rjRS9D2zhNb/Zvs7tZzofW+T+wsbE+PEYAgWgJEOjRaq/LlnbLuoa36Mpc2qlIbGnuNLzBm4evJNLy2nPezCsKc3lSL/da0Ou1F0frP5xMuac3pX3d7P6BIQI9Cv2DMiLQKgECvVXyPi1323B9/3lc19YzM/6muZn7l3+QkIAvr+6T3pXNdjbnyIuHHCmcUGu37lvuiEl2yL+9WDf2l3SHRr19r6y0vAsBBNpFgEC3rKU3DdXXGhMa6Kk5fy/Gci6dkDffbb/9ui8fdqWiK8ylsbq36Upz6+pXlvO6a/UkXdna5W97el1m5ocAAsEJEOjBWQeypPX99cXEux1JztXXIOuvePfohTH/Asy7Uno/p7dOihR0/Fvh1NI15vkhfz12dhPo3rcmc0TADgEC3Y52XKhFvx5Glda1uNoU0+ujJOf9DfTHD/m3iblWjzDel3Rw3Jsa6mW96Ex5tm6c7/N3a8VWAj2M3YEyIRAKAQI9FM3gTSEGexvCXM9G6ujJXuL5eth4s5Slc3l3uj0D3Si8c6pqUR6vb3YvdMfFrf+5FMuDv0b00DUmBBBAoJkAgd5MJaLPDTYcrhbrrFYiXvAv0Mv6++HUfPt2oaPnq8bF8foPKYk5Usr4ZzKY9q89I9rtKTYCCCwK+PfNA3HgAgPd9WCJLV4vJF6oP+d1gc7nYlKx/EQylzIbHddB7jq8vzKjh6Tn6s6+BnqqvpxLlY3XEECg/QQIdIvavCtTr4yz+FgPQ/dtmii0d/cxJ5kZm61uXy/P1oO2oled82viUqp+yTJfBKIv0N7fyNFvvyU1aAz0WLoaKk6lHjRL3uzBH7M+Xgfcg+IFMovJmapvRQfH1SbXx3FxqZh/7VkrP/cIIBBNAQI9mu3WtNSZVH3NMLZ4FlLHx+9/H3fPN61fGJ+czVb/C5XnG0rno7mOc2RCAAEEmgoQ6E1ZovlksnHA+eJjP0dcR1PJ21JnF8/GWtGzx9WmmBkt6NNU8m/WPpWY2SKAQFACBHpQ0gEsJ96wOh5bPL+Jq6Ou/ZoyPm5a9qvMXs+3uHgUmdtweGA871/qFnW/PRMCCCDQTIBAb6YS0edite2x5jt/Mcj9HKDVlfBxxF1E2iBW26dtgrZU9Ujk/HNp+N0QESGKiQACQQkQ6EFJB7CcSnkxSBpatdywX93rIgxxTHTtd9MCrblOS0wHFsSL/q2hzxQbGtfrBmV+CCAQaQG+HSLdfEsLX3ZrzVkPFD8DfY0eE51o2My/tDTt8Vdnql5PV9fS09P+nsltusgm97o4jxBAoFGglgCNz/E4ogKl2oiphv3mfp7kxNFs2dLmV//qXjyBT63LZCZKtYe+3Lf7sf++oDJTBCwRINAtaUhTjdqIaz1923tTsdPfkWvtfvWvge73qPXc+SJd5/QSbD5OZ/XsfEwIIIBAMwG+HZqpRPS5+Xx1c6zbcDKZYpe/TXxTv78BFuamiOuAuMZAl3hFus8sHsfmU8FHs/7+QPOp2MwWAQQCEPD32z6ACrCIusB8bvGx7st1zQgtnQo9/gbArYPtG+jrB3UQ3OL/IEcPE+yY1DEFPh6yZtrz1OKJbMxjJgQQQKBRgEBv1Ij44/HF84mbfduyeFrWXF/j2Wa8r+AOvT73QKphG7/3iwjtHLetqxfNnDu/53S+/oQPj/Q6MHJk1t/29KHYzBIBBAISINADgg5iMZNz9RHQ7uLYrHJHTEo+Hrpmfjzcvc7fIAvCbjXL2Lex/ql4pyv9h2qbSOrPe/nojO4/z5brbezlvJkXAghEX4BAj34bvleD8cYLhDTsys0N+rtW96Mj7Rfo5kCCXSP1cO0rliQ96++Wiren/W3H9zoSDxBAIJICBHokm615ocdmRTRXFqZKw77c+aHF88A2/9g1P3vzQEmGM/4ef33NhfR4BtuGRTLp+vH+Q+f9XTs3xX91kkD3uBmZHQJWCRDoVjWnyOhEtUJuwxr6/JC/QWDWVn9yi/+BFqamet+eemk63LL0n24Ar7/k6aPXJv39YeZpYZkZAggELkCgB07u7wJPjVc3A5ez9eXMr0uJ31dd++TmnHTqYVvtMKU1V2/ZUa/r5rl58fuEeVndAPL6lL8/zNqh7agjAjYLEOiWte6xs9UKVRoGyFWSjsyv9Xftrivhyt/c2h5r6bfsEEmrqZk6CiUZHPd/7fyF8aSU/P5VVu06/IsAAhEVINAj2nArFfvouep+XXe+vn/XvHdmpOGk4yt9+Bqf/1vb52XQ8kPYzKj+D9+0aKvHke2YnJNqtF8j3mU+/v0L/rffZYrAywggEHIBAj3kDXS1xRudcGRWV5R1t65UsvVQn97ifyB06hbhX9o9d7VFjtT7D+4SGe6vFnl4Ni+9OX/P3W6WZI4/f/Ss/+0XqYagsAggcJEAgX4RSfSfeOdUtQ7lqXqgF3oTkuv396xxZql/fVNebl/j/yboVrRSXP+33HewapoqlWWrrp0HMb2dT8j5vP9tF0RdWAYCCPgnQKD7Z9uyOb95orroyrK8mdympzMLYPo/bpiV7kR90FgAiwxkER+63pWhHtEBcK7suTAr8frvJV+X/80TaV/nz8wRQMAOAQLdjnZcUovXj4mU9XzuxcVD2GovTu5I+z7a3SxrXaYi//ymGd23HFDi1Sro4/1Qr8gnbqsuYKce8N+jg+GCmMwZfL9xnEAPwpplIBB1AQI96i3YpPzzBUfePVMRVw9dq+TqoVrqiMvMxmD2xd6xtii/vGe+Semi+dTf/FBFEjpGYMN0VtbOB7dL4ZVKWmZL/DeNZq+h1AgEK8A3RbDegS3txUPVpi0vW0sf29sRWBk+vz0rP7Gl4YD4wJbs7YI+drPITj3N6/BMTrZMBvsj5cvHg9lN4q0Yc0MAgVYIEOitUA9gmS8d1kun6pVNixfqa+hmsXPrU5IdCO4EJf/4ujn55Kbohvr+LWZTe2UhzLdPBHOIWq17jHYl5PG3/D1/QG1Z3COAQPQFCPTot2HTGuQ1zE2olyb1sKfC0lA/f31n08/49eSv7Z+Tz+sx6lGbhgdc+fyHRTZO52RHwGFurL6d71w4ZC1qbpQXAQRaI0Cgt8Y9kKU+9oaOyNYlLV9LN8ekB3EIW62S5mQsf0/3p//69TMS9/scqbWFXuP9Gh3N/sv3uXLjzLRsnQr+x8iFnoQ8+Fow4x2ukYqPI4BASAQI9JA0hB/FOHVBB8ed1rX00aVr6KIJe/ZAlx+LvOQ8H9Bj1H/39inZ2BHuK7Ot6XHkV+8vyV2zUzIU4AC4Rrwn+zvltB6twIQAAghcqQCBfqVSEX3fd192pKzndS/PLg31mU06enp98Ptn9/eV5It3TMoDm8x535eWKQzEI7qZ/d99bE7ump6UrmJrfnicXJOSh95k7TwM/YEyIBAlAQI9Sq21irK+eVLkyFlXCqcuDs8zB7sDOS59ebHNhVx+/fpZ+W+6tr6vV3f2h2T6a3uL8gd3apnm5wM7aczyqpd198RzGzrlteeXv8LfCCCAwKUF4gN9+/7vS7+FV6MuMD7jyMFNIsl1uk89YfaqV6dyJiaxsitd54M5SUptubV7cwIasxl+V09JTszFZazQmt+Xe3tL8u8/OCOfHpqXdKW1Z7h7bWuXfOtQWg69WVPiHgEEELgygeCOX7qy8vAuHwTe0f3orx115NYNrqR31APdLOrcjV3Se6Ig6enWbF42A+Y+MlxYuD19ISlfP5mRx8+lfL9UqBmcd+fagvzEtpzcNlAM5Ippl2vaCT1M7bWRjDz/FbM1ZWk7Xe6zvI4AAggQ6G3SB/7sByJ7t1QkucGRWKYeFm7ckZN39MiOv5zUc5S3FuP2oaKY24Se6e6vzqblifMpeW4sKXk9ja0XkwnxG3Qf/ofWFeT+DTkZTLe4wg2VMieDe3pPj7z2giMzUw0v8BABBBC4QgEC/Qqhov62C9Mij7wYk7824krH7qUBmV2TlLM3d8n6F5ddzaVFlR5IufKpzbmFW143HLw5nZDXJ5ML90d10/zp+ZjMly+3eV4vpJKuyPausuzWTeoHB4tyi66Jm0u8hnF6aXu3XEjG5em/CmPpKBMCCERBIKRfb1Ggi14ZH37JkZu3u7JjpCLx7qWBeOG6Duk8V5TeU8Gdp/xKBNN61dCbB0oLt8b3TxcdmdQ1+XkdRTavVzApu87CMe6d+v7eZEWGdP98amkVGz8eqsfHhnSf+UiHPPsdV+ZmQlU0CoMAAhESINAj1FjXWtSKru1+6VFH/tFmV3puWTY33Zl98k7d9P7tScm0aH/6shJd8s/epKvBHZ5N5pcs7CVeHNf95s/u7pGpCVeefYJ955eg4iUEELiMQETWYS5TC16+YoET50Ue/I6e53304tHclWRMjn+4T0rppZvkr3jmvPGqBOZ1E8IT+3ulrOMYvvNnemU8c8waEwIIILBKAQJ9lXBR/tj3XnXk5cc0QPIXr+EWeuJy9CN9Umbbja9NXNDDBx+9vk+yuk/htRdcOX7I18UxcwQQaAMBAr0NGrlZFf/gIUdOa5A0u/pHTgfJHb+7Tyq6P5rJe4GirpE/tr9PpnVz++R4RR79pvfLYI4IINB+AgR6+7X5Qo1zOvbtt7/kyOzR5gDmMqvHdPM7od7cZ7XPmjA3a+ZjvUkp60l9vvVVRwr51c6NzyGAAAJ1AQK9btF2j87p8c7/8b/q1dh0QFazyYT60Xv6pZxi324zn6t9Lqeb2b93QzXMzWcf/0uR0ZNXOxfejwACCDQXINCbu7TNs0fOiPzOb7tSyjUP9fl1STl8b78UOukq19IpZvU0u48cGJCJnuoFccx+8xe/fy1z5LMIIIDAUgG+pZd6tOVfL77lyB/8F1cqxYtHvhuQfH9CDn98QOaGGCm3mg5yti8pD2uYz3ZUByWcOOLKIw+uZk58BgEEEFhZgIuzrGzTVq+cHHVkQg9pu0mPT3diF29iryQdmdqekUSuIh3jrbmYSxQb5K0NHfL03h49NK362/ncGVe+9gd6jfrwXGQuiqyUGQEEmggQ6E1Q2vWp4ycdGdNQv+GASFwHb100adCb66jndI29+0xBYs1X6C/6WDs+UdAfQE/u65V39VKoYq5Ao9P4OVf+5AsiuezCn/yDAAIIeCrANlRPOaM/s6eeEsnmRH7+F/Wc7w0XcWms2fSWtGTXJGTD0zPSc4ZVzUYb8/js2pT8QM/NnkvVj/sb02vS//Hvi8yH43T5y4vM3wggYIEAa+gWNKLXVRjVgXJvv+3KjTeLZFY4a1xFz3JmNsEXuuPSeb6o11X3uhTRm19RfwC9oFdMe3Fzt5QWN7GbWoyedOVPv+hKdq7JVo/oVZMSI4BASAWc7VseaD68OaQFpljBCazTK7P94t93ZLNecnVxq3HThccKFRl+ZV4G3862/BKsTQvo85MV3T1+eodeXGVdpxRiS8eZHnnLlW98RQ8NZEOGz63A7BFAgECnD1xSoLtP5LM/L3LgekcyqUu+VVLTJVmnwd53LC/tsC6qF3iTia1peXVzl4y69c3rNaXn9GIrTzzU9GR8tbdwjwACCHgmQKB7RmnvjGJxV+59wJG7P+zIWg34S62tG4X0REnWvrEY7BZu/zFr5FPb0nJ0R6ccLiSktGxwYDFfkYcfdOStV+ztE9QMAQTCJ0Cgh69NQluivTeJfOLTIlvWO9Kjg7cvNyXnyjL4VlYGDuck0eRCMJf7fNheL+k+8omdGTmjm9dP5OIy22S0+rlTIt/8qisTY2ErPeVBAAHbBQh021vY4/r19LnysU86cv0Njgz3i3SkL78AR89Z3nsiL/0a7N2jxUjtZzdr47MjKZnckZFxvT8/o6E+o5vRl1XbnJf9mUdFnnnMXAZ12Yv8iQACCAQgQKAHgGzjIvbrCWg+dJ/I8FpHhnqvLNiNQ1xPTGPCvfdkQbrO6rHsIQw/c0GaWT2P/cymlExtTktBj8kf0yAfM0G+PMm1MJBqbAAACM9JREFUTqdPuPKdr7sydq4dRg7Y2JupEwJ2CBDodrRjS2qRzoh88B4dMPd+kZ4uR9b06H2HJt7ldrIvltYpuQuh3nWuqPfFhTPQOU0C0+/KmbVwc1z93LqUzA0nxZy/3tUQN1ekMyE+pceONwvymWlXntRBb2++7HcJmT8CCCBweQEC/fJGvOMyAv2DIh/4qCN7b6xIOhGT/m6RAb0lr/K0RWbTfHqytBDsGR1Yl54uS2qmLMn5iiej5s1vhWJXTAo9ccn3xiU3kJDsYELyfYmFADfVrOgAt+l5PavbrIb8Cpc1zc278uzjjrz0tF7UhsPRLtM7eBkBBIISINCDkm6D5QyuE7ntTpG9eurYhK7hdur+9b4us9Z+9eHeyGWCPpGtLAS7OZd8XI97jxVciRddcSp6M0ltRprrmra7cHOkrJcqLetJcSrJmJQ6YlI0N3PFuGbnqdfN/rN6drwpDfIZHejWbG3clMeskb/8A5GXnxGuYW5AmBBAIFQCBHqomsOOwnTrpvebdDP89QdFunuq+5UzetXQbg32royrQe/IsvOvBFpxE9hmc/qchrgJ8nldE18pxE3BzD7yVzTE33qVAW+BNhQLQwCBqxIg0K+KizdfjYCjK8Q794jsu8WRHXofb9gEb05S06G32n1KX4tffG6Wq1lc0/eaoC7oZvGcuWmIZxdvZtP6paaZKT397WuuvPGiyIWzl3onryGAAALhECDQw9EO1pcipZvfd+4T2bHPla07HUl3XDwi3Jz+PKmhboI9Ye7NFnK96db7hXF2Zqyd+ZS5N1vZa2vVJpx1y/vC/u+yPjYneinpZvTa7UpxJ8ZcOfxDkUN6utbTR5335n+ln+d9CCCAQCsFCPRW6rfpss2a+8gmkU3bHNm43V14nF7hym5+Ek1Pipw66srJYyInD4tMjvu5NOaNAAII+CtAoPvry9yvUGBgjcjaDSJDOrBucEikX299AyKpFa72doWz1bVsc5UzE9aOjF/QM7idd+T8qCtn9YxuXJf8ShV5HwIIREGgYa9mFIpLGW0VMKdKNbe3l1XQnEc+pfvaE3ozh8GZ/fAx3Ry/sPld1/TNJniz+X1hn7hudy+VdXS77i8vl3Tfue4vL+qtumnevMtMtfvqX/yLAAII2CJAoNvSkpbWw5xGdWFNusl50y+usol3JgQQQKA9BXQdhwkBBBBAAAEEoi5AoEe9BSk/AggggAACKkCg0w0QQAABBBCwQIBAt6ARqQICCCCAAAIEOn0AAQQQQAABCwQIdAsakSoggAACCCBAoNMHEEAAAQQQsECAQLegEakCAggggAACBDp9AAEEEEAAAQsECHQLGpEqIIAAAgggQKDTBxBAAAEEELBAgEC3oBGpAgIIIIAAAgQ6fQABBBBAAAELBAh0CxqRKiCAAAIIIECg0wcQQAABBBCwQIBAt6ARqQICCCCAAAIEOn0AAQQQQAABCwQIdAsakSoggAACCCBAoNMHEEAAAQQQsECAQLegEakCAggggAACBDp9AAEEEEAAAQsECHQLGpEqIIAAAgggQKDTBxBAAAEEELBAgEC3oBGpAgIIIIAAAgQ6fQABBBBAAAELBAh0CxqRKiCAAAIIIECg0wcQQAABBBCwQIBAt6ARqQICCCCAAAIEOn0AAQQQQAABCwQIdAsakSoggAACCCBAoNMHEEAAAQQQsECAQLegEakCAggggAACBDp9AAEEEEAAAQsECHQLGpEqIIAAAgggQKDTBxBAAAEEELBAgEC3oBGpAgIIIIAAAgQ6fQABBBBAAAELBAh0CxqRKiCAAAIIIECg0wcQQAABBBCwQIBAt6ARqQICCCCAAAIEOn0AAQQQQAABCwQIdAsakSoggAACCCBAoNMHEEAAAQQQsECAQLegEakCAggggAACBDp9AAEEEEAAAQsECHQLGpEqIIAAAgggQKDTBxBAAAEEELBAgEC3oBGpAgIIIIAAAgQ6fQABBBBAAAELBAh0CxqRKiCAAAIIIECg0wcQQAABBBCwQIBAt6ARqQICCCCAAAIEOn0AAQQQQAABCwQIdAsakSoggAACCCBAoNMHEEAAAQQQsECAQLegEakCAggggAACBDp9AAEEEEAAAQsECHQLGpEqIIAAAgggQKDTBxBAAAEEELBAgEC3oBGpAgIIIIAAAgQ6fQABBBBAAAELBAh0CxqRKiCAAAIIIECg0wcQQAABBBCwQIBAt6ARqQICCCCAAAIEOn0AAQQQQAABCwQIdAsakSoggAACCCBAoNMHEEAAAQQQsECAQLegEakCAggggAACBDp9AAEEEEAAAQsECHQLGpEqIIAAAgggQKDTBxBAAAEEELBAgEC3oBGpAgIIIIAAAgQ6fQABBBBAAAELBAh0CxqRKiCAAAIIIECg0wcQQAABBBCwQIBAt6ARqQICCCCAAAIEOn0AAQQQQAABCwQIdAsakSoggAACCCBAoNMHEEAAAQQQsECAQLegEakCAggggAACBDp9AAEEEEAAAQsECHQLGpEqIIAAAgggQKDTBxBAAAEEELBAgEC3oBGpAgIIIIAAAgQ6fQABBBBAAAELBAh0CxqRKiCAAAIIIECg0wcQQAABBBCwQIBAt6ARqQICCCCAAAIEOn0AAQQQQAABCwQIdAsakSoggAACCCBAoNMHEEAAAQQQsECAQLegEakCAggggAACBDp9AAEEEEAAAQsECHQLGpEqIIAAAgggQKDTBxBAAAEEELBAgEC3oBGpAgIIIIAAAgQ6fQABBBBAAAELBAh0CxqRKiCAAAIIIECg0wcQQAABBBCwQIBAt6ARqQICCCCAAAIEOn0AAQQQQAABCwQIdAsakSoggAACCCBAoNMHEEAAAQQQsECAQLegEakCAggggAACBDp9AAEEEEAAAQsECHQLGpEqIIAAAgggQKDTBxBAAAEEELBAgEC3oBGpAgIIIIAAAgQ6fQABBBBAAAELBAh0CxqRKiCAAAIIIECg0wcQQAABBBCwQOD/B0PHHbcxCFAcAAAAAElFTkSuQmCC" alt="문화놀이터 공조 로고" class="brand-logo-img" />
+    </div>
+    <div class="brand-footer-name">문화놀이터 공조</div>
+    <div class="brand-footer-copy">© 문화놀이터 공조. All rights reserved.</div>
+  </footer>
+
+  <!-- Status Modal -->
+  <div id="statusModal" class="status-modal-backdrop no-print">
+    <div class="status-modal">
+      <h3 id="modalTitle">제출이 완료되었습니다!</h3>
+      <p id="modalDesc">작성해주신 제작 의뢰서가 문화놀이터 공조로 정상 접수되었습니다.</p>
+      <div class="status-modal-btns">
+        <button type="button" class="admin-btn primary" onclick="closeStatusModal()">확인 (닫기)</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * ============================================================
+     * [문화놀이터 공조] 의뢰서 수신 설정
+     * 1) COMPANY_EMAIL: 의뢰서를 수신할 대표 이메일 주소
+     * 2) GOOGLE_SCRIPT_URL: 구글 스프레드시트 자동 저장용 웹앱 URL (설정 가이드 참고)
+     * ============================================================
+     */
+    const COMPANY_EMAIL = "jeju.gongjo@gmail.com";
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby5wDrIzOgAS4O5ulk5P1ziL7sWXimO-qgbppVoj9I1AG7CubvS1Ps0SGctZVugkCcFrQ/exec";
+
+    const form = document.getElementById("productionRequestForm");
+    const contentContainer = document.getElementById("contentItemsContainer");
+
+    // 7번 섹션 첨부 파일 상태 관리 (최대 20MB)
+    let selectedSourceFiles = [];
+    let restoredAttachedFileNames = [];
+    const MAX_TOTAL_FILE_SIZE = 20 * 1024 * 1024; // 20MB
+
+    function formatBytes(bytes) {
+      if (!bytes || bytes === 0) return "0 KB";
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+      return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+    }
+
+    function handleSourceFiles(fileList) {
+      if (!fileList || fileList.length === 0) return;
+      const newFiles = Array.from(fileList);
+
+      let totalSize = selectedSourceFiles.reduce((acc, f) => acc + f.size, 0);
+      for (const file of newFiles) {
+        if (totalSize + file.size > MAX_TOTAL_FILE_SIZE) {
+          showStatusModal(
+            "⚠️ 첨부 용량 초과 (최대 20MB)",
+            "이메일 직접 첨부는 합계 20MB까지만 가능합니다. 고용량 영상이나 사진 폴더는 아래 '대용량 소스 공유 링크' 칸에 드라이브 링크를 남겨주세요."
+          );
+          break;
+        }
+        if (!selectedSourceFiles.some((f) => f.name === file.name && f.size === file.size)) {
+          selectedSourceFiles.push(file);
+          totalSize += file.size;
+        }
+      }
+      const inputEl = document.getElementById("sourceFilesInput");
+      if (inputEl) inputEl.value = "";
+      renderAttachedFilesList();
+    }
+
+    function removeSourceFile(idx) {
+      selectedSourceFiles.splice(idx, 1);
+      renderAttachedFilesList();
+    }
+
+    function renderAttachedFilesList() {
+      const listEl = document.getElementById("attachedFilesList");
+      if (!listEl) return;
+
+      if (selectedSourceFiles.length > 0) {
+        listEl.innerHTML = selectedSourceFiles
+          .map(
+            (file, idx) => `
+            <div class="file-item">
+              <span>📄 ${file.name} <span style="color: var(--text-muted); font-weight: 500;">(${formatBytes(file.size)})</span></span>
+              ${!isReadOnly ? `<button type="button" class="file-item-remove no-print" onclick="removeSourceFile(${idx})">✕ 삭제</button>` : ""}
+            </div>
+          `
+          )
+          .join("");
+      } else if (restoredAttachedFileNames.length > 0) {
+        listEl.innerHTML = restoredAttachedFileNames
+          .map(
+            (nameStr) => `
+            <div class="file-item">
+              <span>📎 ${nameStr} <span style="color: var(--brand-orange); font-size: 12px; margin-left: 6px;">(수신된 이메일의 첨부파일에서 다운로드 가능)</span></span>
+            </div>
+          `
+          )
+          .join("");
+      } else {
+        listEl.innerHTML = `<div style="font-size: 13px; color: var(--text-muted);">선택된 첨부 파일이 없습니다.</div>`;
+      }
+    }
+
+    function readFilesAsBase64(files) {
+      return Promise.all(
+        files.map(
+          (file) =>
+            new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => {
+                const resultStr = String(reader.result || "");
+                const base64Data = resultStr.includes(",") ? resultStr.split(",")[1] : resultStr;
+                resolve({
+                  name: file.name,
+                  mimeType: file.type || "application/octet-stream",
+                  sizeText: formatBytes(file.size),
+                  base64: base64Data
+                });
+              };
+              reader.onerror = (err) => reject(err);
+              reader.readAsDataURL(file);
+            })
+        )
+      );
+    }
+
+    // 0. 의뢰 콘텐츠 카드 동적 추가 / 삭제 / 번호 재정렬
+    function reindexContentItems() {
+      const cards = contentContainer.querySelectorAll(".content-card");
+      cards.forEach((card, index) => {
+        const num = index + 1;
+        card.dataset.index = num;
+
+        const badge = card.querySelector(".content-badge");
+        if (badge) badge.textContent = `의뢰 콘텐츠 #${num}`;
+
+        const removeBtn = card.querySelector(".remove-content-btn");
+        if (removeBtn) {
+          removeBtn.style.display = cards.length > 1 && !isReadOnly ? "inline-flex" : "none";
+        }
+
+        const fields = card.querySelectorAll("[data-field]");
+        fields.forEach((el) => {
+          el.name = `c${num}_${el.dataset.field}`;
+        });
+      });
+    }
+
+    function addContentItem(shouldScroll = true) {
+      const firstCard = contentContainer.querySelector(".content-card");
+      if (!firstCard) return;
+
+      const nextNum = contentContainer.querySelectorAll(".content-card").length + 1;
+      const clone = firstCard.cloneNode(true);
+      clone.dataset.index = nextNum;
+
+      // DOM에 추가하기 전에 먼저 radio/input의 name을 새 번호로 분리하여 기존 카드 선택값이 풀리지 않도록 보호
+      clone.querySelectorAll("[data-field]").forEach((el) => {
+        el.name = `c${nextNum}_${el.dataset.field}`;
+      });
+
+      clone.querySelectorAll("input, textarea, select").forEach((el) => {
+        if (el.type === "checkbox" || el.type === "radio") {
+          el.checked = false;
+          el.removeAttribute("checked");
+        } else {
+          el.value = "";
+          el.removeAttribute("value");
+        }
+      });
+
+      contentContainer.appendChild(clone);
+      reindexContentItems();
+
+      if (shouldScroll) {
+        clone.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+
+    function removeContentItem(btnEl) {
+      const cards = contentContainer.querySelectorAll(".content-card");
+      if (cards.length <= 1) return;
+      const targetCard = btnEl.closest(".content-card");
+      if (targetCard) {
+        targetCard.remove();
+        reindexContentItems();
+      }
+    }
+
+    // 1. 원본 폼 복원용 초경량 URL 직렬화/압축 설정 (Error: URI Too Long 완벽 방지)
+    const TOP_FIELDS = [
+      "organization",
+      "projectName",
+      "managerName",
+      "phone",
+      "email",
+      "shootDate",
+      "shootLocation",
+      "shootDuration",
+      "deadline",
+      "budget",
+      "rawData",
+      "toneAndManner",
+      "reference",
+      "eventType",
+      "targetAudience",
+      "providedAssets",
+      "sourceLink",
+      "portraitRight",
+      "additionalNotes"
+    ];
+
+    const CARD_FIELDS = [
+      "title",
+      "prodType",
+      "deliverable",
+      "shortformCount",
+      "longformCount",
+      "photoCount",
+      "aspectRatio",
+      "direction",
+      "keyMessage",
+      "usage",
+      "tone",
+      "toneOther",
+      "mustScenes",
+      "reference",
+      "cardNotes"
+    ];
+
+    function bytesToBase64Url(bytes) {
+      let binary = "";
+      for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+
+    function base64UrlToBytes(b64url) {
+      let b64 = b64url.replace(/-/g, "+").replace(/_/g, "/");
+      while (b64.length % 4 !== 0) {
+        b64 += "=";
+      }
+      const binary = atob(b64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      return bytes;
+    }
+
+    function utf8ToBase64Url(str) {
+      return bytesToBase64Url(new TextEncoder().encode(str));
+    }
+
+    function base64UrlToUtf8(b64url) {
+      return new TextDecoder().decode(base64UrlToBytes(b64url));
+    }
+
+    function compressStringToParam(str) {
+      return "c." + utf8ToBase64Url(str);
+    }
+
+    async function decompressParamToString(param) {
+      if (param.startsWith("c.")) {
+        return base64UrlToUtf8(param.slice(2));
+      }
+      if (param.startsWith("z.") && typeof DecompressionStream !== "undefined") {
+        const compressedBytes = base64UrlToBytes(param.slice(2));
+        const ds = new DecompressionStream("deflate-raw");
+        const writer = ds.writable.getWriter();
+        await writer.write(compressedBytes);
+        await writer.close();
+        const decompressedBuf = await new Response(ds.readable).arrayBuffer();
+        return new TextDecoder().decode(new Uint8Array(decompressedBuf));
+      }
+      // 구버전(btoa + encodeURIComponent) 호환
+      return decodeURIComponent(atob(param));
+    }
+
+    function trimTrailingEmpty(arr) {
+      const copy = arr.slice();
+      while (copy.length > 0 && (copy[copy.length - 1] === "" || copy[copy.length - 1] === null)) {
+        copy.pop();
+      }
+      return copy;
+    }
+
+    function buildCompactFormPayload() {
+      const topVals = TOP_FIELDS.map((name) => {
+        const els = form.querySelectorAll(`[name="${name}"]`);
+        if (!els || els.length === 0) return "";
+        const first = els[0];
+        if (first.type === "checkbox") {
+          return Array.from(els)
+            .filter((el) => el.checked)
+            .map((el) => el.value)
+            .join("|");
+        }
+        if (first.type === "radio") {
+          const checked = Array.from(els).find((el) => el.checked);
+          return checked ? checked.value : "";
+        }
+        return first.value ? first.value.trim() : "";
+      });
+
+      const cards = contentContainer.querySelectorAll(".content-card");
+      const cardValsList = Array.from(cards).map((card) => {
+        const vals = CARD_FIELDS.map((fieldKey) => {
+          const els = card.querySelectorAll(`[data-field="${fieldKey}"]`);
+          if (!els || els.length === 0) return "";
+          const first = els[0];
+          if (first.type === "checkbox") {
+            return Array.from(els)
+              .filter((el) => el.checked)
+              .map((el) => el.value)
+              .join("|");
+          }
+          if (first.type === "radio") {
+            const checked = Array.from(els).find((el) => el.checked);
+            return checked ? checked.value : "";
+          }
+          return first.value ? first.value.trim() : "";
+        });
+        return trimTrailingEmpty(vals);
+      });
+
+      let attachedNames = [];
+      if (selectedSourceFiles.length > 0) {
+        attachedNames = selectedSourceFiles.map((f) => `${f.name} (${formatBytes(f.size)})`);
+      } else if (restoredAttachedFileNames.length > 0) {
+        attachedNames = restoredAttachedFileNames;
+      }
+
+      return [
+        2,
+        new Date().toLocaleString("ko-KR"),
+        trimTrailingEmpty(topVals),
+        cardValsList,
+        attachedNames
+      ];
+    }
+
+    function expandCompactPayloadToState(compactArr) {
+      const [, submittedAt, topVals = [], cardValsList = [], attachedNames = []] = compactArr;
+      const state = {
+        _submittedAt: submittedAt || "",
+        _contentCount: Math.max(1, cardValsList.length),
+        _attachedFileNames: attachedNames || []
+      };
+
+      const checkboxTopFields = new Set(["eventType", "targetAudience", "providedAssets"]);
+      TOP_FIELDS.forEach((name, idx) => {
+        const raw = topVals[idx] || "";
+        if (!raw) return;
+        if (checkboxTopFields.has(name)) {
+          state[name] = raw.split("|").filter(Boolean);
+        } else {
+          state[name] = raw;
+        }
+      });
+
+      const checkboxCardFields = new Set(["deliverable", "aspectRatio", "tone"]);
+      cardValsList.forEach((cardVals, cIdx) => {
+        const num = cIdx + 1;
+        CARD_FIELDS.forEach((fieldKey, fIdx) => {
+          const raw = (cardVals && cardVals[fIdx]) || "";
+          if (!raw) return;
+          const fullKey = `c${num}_${fieldKey}`;
+          if (checkboxCardFields.has(fieldKey)) {
+            state[fullKey] = raw.split("|").filter(Boolean);
+          } else {
+            state[fullKey] = raw;
+          }
+        });
+      });
+
+      return state;
+    }
+
+    async function serializeFormState() {
+      const compactPayload = buildCompactFormPayload();
+      const jsonStr = JSON.stringify(compactPayload);
+      const encoded = compressStringToParam(jsonStr);
+      const baseUrl = window.location.href.split("?")[0].split("#")[0];
+      return `${baseUrl}?view=1&d=${encoded}`;
+    }
+
+    const TABLE_SUMMARY_KEYS = [
+      "제출일시",
+      "1_의뢰기관명",
+      "1_프로젝트명",
+      "1_담당자",
+      "1_연락처",
+      "1_이메일",
+      "2_촬영일시",
+      "2_촬영장소",
+      "2_예상촬영시간",
+      "2_희망납품일",
+      "2_예산범위",
+      "3_의뢰콘텐츠_수량",
+      "3_의뢰콘텐츠_상세내역",
+      "4_원본데이터필요여부",
+      "5_행사성격",
+      "5_타겟시청자",
+      "6_제공가능소스",
+      "6_첨부파일목록",
+      "6_소스공유링크",
+      "6_초상권동의여부",
+      "6_기타요청사항"
+    ];
+
+    function escapeHtml(str) {
+      return String(str || "-")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function renderTablePdfDocument(state) {
+      const summary = collectReadableSummary("");
+      if (state && state._submittedAt) {
+        summary["제출일시"] = state._submittedAt;
+      }
+
+      const titleEl = document.getElementById("tablePdfTitle");
+      const tbodyEl = document.getElementById("tablePdfTbody");
+      if (titleEl) {
+        titleEl.textContent = summary["_subject"] || `[문화놀이터 공조] 신규 제작 의뢰서 접수`;
+      }
+      if (tbodyEl) {
+        tbodyEl.innerHTML = TABLE_SUMMARY_KEYS.map(
+          (key) => `
+          <tr>
+            <th>${escapeHtml(key)}</th>
+            <td>${escapeHtml(summary[key] || "-")}</td>
+          </tr>
+        `
+        ).join("");
+      }
+    }
+
+    // 2. 메일의 [원본 폼 확인](?view=1&d=...) 또는 [PDF 저장하기](?view=1&mode=table&d=...) 접속 처리
+    async function applyEncodedState(inputStr, isTableMode = false) {
+      if (!inputStr) return false;
+      let encoded = inputStr.trim();
+      if (encoded.includes("d=")) {
+        encoded = encoded.split("d=")[1].split("&")[0].split("#")[0];
+      }
+
+      try {
+        const jsonStr = await decompressParamToString(encoded);
+        const parsed = JSON.parse(jsonStr);
+        const state =
+          Array.isArray(parsed) && parsed[0] === 2
+            ? expandCompactPayloadToState(parsed)
+            : parsed;
+
+        // 이전 버전 링크 호환 처리
+        if (!("c1_prodType" in state) && "prodType" in state) {
+          state.c1_prodType = Array.isArray(state.prodType) ? state.prodType[0] : state.prodType;
+          state.c1_deliverable = state.deliverable;
+          state.c1_shortformCount = state.shortformCount;
+          state.c1_longformCount = state.longformCount;
+          state.c1_photoCount = state.photoCount;
+          state.c1_aspectRatio = state.aspectRatio;
+          state.c1_keyMessage = state.keyMessage;
+        }
+
+        // 저장된 콘텐츠 카드 개수만큼 동적 생성/조정
+        const targetCount = Math.max(1, parseInt(state._contentCount || 1, 10));
+        while (contentContainer.querySelectorAll(".content-card").length < targetCount) {
+          addContentItem(false);
+        }
+        while (contentContainer.querySelectorAll(".content-card").length > targetCount) {
+          const cards = contentContainer.querySelectorAll(".content-card");
+          cards[cards.length - 1].remove();
+        }
+        reindexContentItems();
+
+        form.reset();
+
+        const elements = form.querySelectorAll("input, select, textarea");
+        elements.forEach((el) => {
+          if (!el.name || !(el.name in state) || el.type === "file") return;
+          const val = state[el.name];
+          if (el.type === "checkbox") {
+            el.checked = Array.isArray(val) && val.includes(el.value);
+          } else if (el.type === "radio") {
+            el.checked = Array.isArray(val) ? val.includes(el.value) : val === el.value;
+          } else {
+            el.value = val;
+          }
+        });
+
+        restoredAttachedFileNames = Array.isArray(state._attachedFileNames) ? state._attachedFileNames : [];
+        renderAttachedFilesList();
+
+        // 운영자 전용 상단 바 & 하단 PDF 저장 영역 활성화, 일반 제출 버튼 숨김
+        const bar = document.getElementById("adminViewBar");
+        const titleEl = document.getElementById("adminViewTitle");
+        const subEl = document.getElementById("adminViewSub");
+        const clientSubmitArea = document.getElementById("clientSubmitArea");
+        const adminBottomActions = document.getElementById("adminBottomActions");
+        const mainFormContainer = document.getElementById("mainFormContainer");
+        const tablePdfDocContainer = document.getElementById("tablePdfDocContainer");
+        const toggleBtn = document.getElementById("toggleEditBtn");
+
+        bar.classList.add("active");
+        if (clientSubmitArea) clientSubmitArea.style.display = "none";
+        if (adminBottomActions) adminBottomActions.style.display = "flex";
+
+        const org = state.organization || "의뢰처";
+        const proj = state.projectName || "프로젝트";
+        const time = state._submittedAt || "";
+
+        if (isTableMode) {
+          renderTablePdfDocument(state);
+          if (mainFormContainer) mainFormContainer.style.display = "none";
+          if (tablePdfDocContainer) tablePdfDocContainer.classList.add("active");
+          if (toggleBtn) toggleBtn.style.display = "none";
+          titleEl.textContent = `📊 [${org} - ${proj}] 표 형태 의뢰서 문서 (PDF 저장 모드)`;
+          subEl.textContent = `제출 일시: ${time} | 우측 [A4 PDF로 저장 / 인쇄하기] 버튼을 눌러 표 형태 문서를 그대로 저장하세요.`;
+          setReadOnlyMode(true);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          setTimeout(() => {
+            window.print();
+          }, 350);
+          return true;
+        }
+
+        titleEl.textContent = `📋 [${org} - ${proj}] 작성 원본 열람 모드 (운영자 전용)`;
+        subEl.textContent = `제출 일시: ${time} | 우측 [A4 PDF로 저장 / 인쇄하기] 버튼을 눌러 원본 형태 그대로 보관하세요.`;
+
+        setReadOnlyMode(true);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return true;
+      } catch (err) {
+        console.error("원본 데이터 복원 오류:", err);
+        return false;
+      }
+    }
+
+    function restoreFormFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      let encoded = params.get("d");
+      let isTableMode = params.get("mode") === "table";
+      if (!encoded && window.location.hash && window.location.hash.includes("d=")) {
+        const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+        encoded = hashParams.get("d");
+        if (!isTableMode) isTableMode = hashParams.get("mode") === "table";
+      }
+      if (encoded) {
+        applyEncodedState(encoded, isTableMode);
+      }
+    }
+
+    let isReadOnly = false;
+    function setReadOnlyMode(lock) {
+      isReadOnly = lock;
+      const elements = form.querySelectorAll("input, select, textarea");
+      elements.forEach((el) => {
+        el.disabled = lock;
+      });
+      const addBtn = document.getElementById("addContentBtn");
+      if (addBtn) {
+        addBtn.style.display = lock ? "none" : "flex";
+      }
+      const fileControls = document.getElementById("fileUploadControls");
+      if (fileControls) {
+        fileControls.style.display = lock ? "none" : "flex";
+      }
+      reindexContentItems();
+      renderAttachedFilesList();
+
+      const toggleBtn = document.getElementById("toggleEditBtn");
+      if (toggleBtn) {
+        toggleBtn.textContent = lock ? "✏️ 내용 수정 잠금 해제" : "🔒 열람 전용으로 잠그기";
+      }
+    }
+
+    function toggleReadOnlyMode() {
+      setReadOnlyMode(!isReadOnly);
+    }
+
+    // 3. 원본 열람 링크 클립보드 복사
+    async function copyShareableFormUrl() {
+      const shareUrl = await serializeFormState();
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        showStatusModal(
+          "🔗 작성본 원본 링크가 복사되었습니다!",
+          "복사된 링크를 메신저나 메일로 전달하면, 상대방도 지금 체크된 원본 폼 화면 그대로 열어보고 PDF로 저장할 수 있습니다."
+        );
+      });
+    }
+
+    // 4. 사람이 읽기 쉬운 한글 요약 데이터 추출 (이메일 & 구글 시트 신/구버전 완벽 호환)
+    function collectReadableSummary(shareUrl, attachments = []) {
+      const getLabelText = (input) => {
+        if (!input || !input.parentElement) return "";
+        return (input.parentElement.innerText || input.parentElement.textContent || "").trim();
+      };
+      const getCheckedTexts = (name) => {
+        return Array.from(form.querySelectorAll(`input[name="${name}"]:checked`))
+          .map((input) => getLabelText(input))
+          .filter(Boolean)
+          .join(", ") || "-";
+      };
+      const getVal = (name) => {
+        const el = form.querySelector(`[name="${name}"]`);
+        return el && el.value ? el.value.trim() : "-";
+      };
+      const getSelectText = (name) => {
+        const sel = form.querySelector(`select[name="${name}"]`);
+        return sel && sel.selectedIndex > 0 ? sel.options[sel.selectedIndex].text : "-";
+      };
+
+      // 각 콘텐츠 카드 내부에서 직접 data-field 기준으로 값을 추출 (복수 추가 시 누락 원천 차단)
+      const getCardVal = (card, fieldKey) => {
+        const el = card.querySelector(`[data-field="${fieldKey}"]`);
+        return el && el.value ? el.value.trim() : "-";
+      };
+      const getCardCheckedTexts = (card, fieldKey) => {
+        return Array.from(card.querySelectorAll(`input[data-field="${fieldKey}"]:checked`))
+          .map((input) => getLabelText(input))
+          .filter(Boolean)
+          .join(", ") || "-";
+      };
+
+      const cards = contentContainer.querySelectorAll(".content-card");
+      const isMulti = cards.length > 1;
+
+      const cardDetails = Array.from(cards).map((card, idx) => {
+        const n = idx + 1;
+        const title = getCardVal(card, "title");
+        const headerTitle = title !== "-" ? `[콘텐츠 #${n} : ${title}]` : `[콘텐츠 #${n}]`;
+        const prodType = getCardCheckedTexts(card, "prodType");
+
+        const sf = getCardVal(card, "shortformCount");
+        const lf = getCardVal(card, "longformCount");
+        const ph = getCardVal(card, "photoCount");
+
+        const delivParts = [];
+        const checkedDelivs = Array.from(card.querySelectorAll(`input[data-field="deliverable"]:checked`));
+        checkedDelivs.forEach((chk) => {
+          const labelText = getLabelText(chk);
+          let countText = "-";
+          if (chk.value === "shortform") countText = sf;
+          if (chk.value === "longform") countText = lf;
+          if (chk.value === "photo_snap") countText = ph;
+          delivParts.push(countText !== "-" ? `${labelText} (${countText})` : labelText);
+        });
+        if (delivParts.length === 0) {
+          if (sf !== "-") delivParts.push(`숏폼 (${sf})`);
+          if (lf !== "-") delivParts.push(`롱폼 (${lf})`);
+          if (ph !== "-") delivParts.push(`사진 (${ph})`);
+        }
+        const deliverableStr = delivParts.join(" / ") || "-";
+
+        const ratio = getCardCheckedTexts(card, "aspectRatio");
+        const direction = getCardVal(card, "direction");
+        const keyMsg = getCardVal(card, "keyMessage");
+        const usage = getCardVal(card, "usage");
+
+        const tone = getCardCheckedTexts(card, "tone");
+        const toneOther = getCardVal(card, "toneOther");
+        let toneStr = tone;
+        if (toneOther !== "-") {
+          toneStr = toneStr !== "-" ? `${toneStr} (기타: ${toneOther})` : `기타: ${toneOther}`;
+        }
+        const mustScenes = getCardVal(card, "mustScenes");
+        const reference = getCardVal(card, "reference");
+        const cardNotes = getCardVal(card, "cardNotes");
+
+        const fullBlockLines = [
+          headerTitle,
+          `  • 제작 구분: ${prodType}`,
+          `  • 결과물 형태/분량: ${deliverableStr}`,
+          `  • 희망 화면 비율: ${ratio}`,
+          `  • 희망 영상 컨셉 (연출 방향): ${direction}`,
+          `  • 반드시 담아야 하는 핵심 내용: ${keyMsg}`,
+          `  • 활용처: ${usage}`
+        ];
+        if (toneStr !== "-") fullBlockLines.push(`  • 희망 영상 톤앤매너: ${toneStr}`);
+        if (mustScenes !== "-") fullBlockLines.push(`  • 꼭 들어가야 하는 장면:\n    ${mustScenes.replace(/\n/g, "\n    ")}`);
+        if (reference !== "-") fullBlockLines.push(`  • 참고 레퍼런스: ${reference}`);
+        if (cardNotes !== "-") fullBlockLines.push(`  • 기타 요청 사항: ${cardNotes}`);
+
+        const fullBlock = fullBlockLines.join("\n");
+
+        return {
+          n,
+          title,
+          headerTitle,
+          prodType,
+          sf,
+          lf,
+          ph,
+          deliverableStr,
+          ratio,
+          direction,
+          keyMsg,
+          usage,
+          toneStr,
+          mustScenes,
+          reference,
+          cardNotes,
+          fullBlock
+        };
+      });
+
+      const contentSummaries = cardDetails.map((c) => c.fullBlock);
+
+      // 기존 구글 시트/앱스 스크립트 컬럼(3_제작형태 ~ 4_핵심메시지)을 그대로 쓰는 경우에도 복수 콘텐츠가 모두 기록되도록 통합 문자열 생성
+      const formatPerCard = (getter) => {
+        return cardDetails
+          .map((c) => (isMulti || c.title !== "-" ? `${c.headerTitle} ${getter(c)}` : getter(c)))
+          .join("\n");
+      };
+
+      const legacyProdType = formatPerCard((c) => c.prodType);
+      const legacyDeliverable = formatPerCard((c) => c.deliverableStr);
+      const legacyShortform = formatPerCard((c) => c.sf);
+      const legacyLongform = formatPerCard((c) => c.lf);
+      const legacyPhoto = formatPerCard((c) => c.ph);
+      const legacyRatio = formatPerCard((c) => c.ratio);
+      const legacyConceptAndKeyMsg = cardDetails
+        .map((c) => {
+          const lines = [
+            c.headerTitle,
+            `• 희망 영상 컨셉 (연출 방향): ${c.direction}`,
+            `• 반드시 담아야 하는 핵심 내용: ${c.keyMsg}`,
+            `• 활용처: ${c.usage}`
+          ];
+          if (c.toneStr !== "-") lines.push(`• 희망 영상 톤앤매너: ${c.toneStr}`);
+          if (c.mustScenes !== "-") lines.push(`• 꼭 들어가야 하는 장면: ${c.mustScenes}`);
+          if (c.reference !== "-") lines.push(`• 참고 레퍼런스: ${c.reference}`);
+          if (c.cardNotes !== "-") lines.push(`• 기타 요청 사항: ${c.cardNotes}`);
+          return lines.join("\n");
+        })
+        .join("\n\n");
+
+      const legacyCardTone = formatPerCard((c) => c.toneStr);
+      const legacyCardRef = formatPerCard((c) => c.reference);
+
+      const attachedNamesStr =
+        attachments.length > 0
+          ? attachments.map((a) => `${a.name} (${a.sizeText})`).join(", ")
+          : restoredAttachedFileNames.length > 0
+            ? restoredAttachedFileNames.join(", ")
+            : "-";
+      const sourceLinkStr = getVal("sourceLink");
+      const providedTypes = getCheckedTexts("providedAssets");
+
+      const combinedSourceSummary = [
+        `선택 항목: ${providedTypes}`,
+        attachedNamesStr !== "-" ? `첨부 파일: ${attachedNamesStr} (이메일 첨부파일 참조)` : null,
+        sourceLinkStr !== "-" ? `공유 링크: ${sourceLinkStr}` : null
+      ]
+        .filter(Boolean)
+        .join(" | ");
+
+      const toneVal = getCheckedTexts("toneAndManner");
+      const refVal = getVal("reference");
+      const eventVal = getCheckedTexts("eventType");
+      const targetVal = getCheckedTexts("targetAudience");
+
+      return {
+        "_subject": `[제작의뢰서] ${getVal("organization")} - ${getVal("projectName")} (총 ${cards.length}건)`,
+        "제출일시": new Date().toLocaleString("ko-KR"),
+        "1_의뢰기관명": getVal("organization"),
+        "1_프로젝트명": getVal("projectName"),
+        "1_담당자": getVal("managerName"),
+        "1_연락처": getVal("phone"),
+        "1_이메일": getVal("email"),
+        "2_촬영일시": getVal("shootDate"),
+        "2_촬영장소": getVal("shootLocation"),
+        "2_예상촬영시간": getCheckedTexts("shootDuration"),
+        "2_희망납품일": getVal("deadline"),
+        "2_예산범위": getSelectText("budget"),
+        // 신규 통합 컬럼 (콘텐츠 수량 + 상세내역)
+        "3_의뢰콘텐츠_수량": `총 ${cards.length}건`,
+        "3_의뢰콘텐츠_상세내역": "\n" + contentSummaries.join("\n\n"),
+        // 기존 구글 시트/스크립트 호환용 컬럼 (복수 콘텐츠 전체 내역 자동 병합)
+        "3_제작형태": legacyProdType,
+        "3_결과물_종류": legacyDeliverable,
+        "3_숏폼편수": legacyShortform,
+        "3_롱폼분량": legacyLongform,
+        "3_사진장수": legacyPhoto,
+        "3_화면비율": legacyRatio,
+        "4_원본데이터필요여부": getCheckedTexts("rawData"),
+        "4_핵심메시지": legacyConceptAndKeyMsg,
+        // 신규 5번: 행사 성격 및 타겟 시청자
+        "5_행사성격": eventVal,
+        "5_타겟시청자": targetVal,
+        // 신규 6번: 제공 소스 및 초상권
+        "6_제공가능소스": combinedSourceSummary,
+        "6_첨부파일목록": attachedNamesStr,
+        "6_소스공유링크": sourceLinkStr,
+        "6_초상권동의여부": getCheckedTexts("portraitRight"),
+        "6_기타요청사항": getVal("additionalNotes"),
+        // 구버전 및 기존 구글 시트/스크립트 완벽 호환 매핑
+        "5_영상톤앤매너": legacyCardTone !== "-" ? legacyCardTone : toneVal,
+        "5_참고레퍼런스": legacyCardRef !== "-" ? legacyCardRef : refVal,
+        "6_행사성격": eventVal,
+        "6_타겟시청자": targetVal,
+        "6_참고레퍼런스": legacyCardRef !== "-" ? legacyCardRef : refVal,
+        "6_영상톤앤매너": legacyCardTone !== "-" ? legacyCardTone : toneVal,
+        "7_제공가능소스": combinedSourceSummary,
+        "7_첨부파일목록": attachedNamesStr,
+        "7_소스공유링크": sourceLinkStr,
+        "7_초상권동의여부": getCheckedTexts("portraitRight"),
+        "7_기타요청사항": getVal("additionalNotes"),
+        "원본폼_열람_및_PDF저장_링크": shareUrl,
+        "_attachments": attachments
+      };
+    }
+
+    function showStatusModal(title, desc) {
+      document.getElementById("modalTitle").textContent = title;
+      document.getElementById("modalDesc").textContent = desc;
+      document.getElementById("statusModal").classList.add("active");
+    }
+
+    function closeStatusModal() {
+      document.getElementById("statusModal").classList.remove("active");
+    }
+
+    // 5. 폼 제출 이벤트 처리 (구글 시트 자동 기록 + jeju.gongjo@gmail.com 이메일 및 첨부파일 동시 발송)
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const submitBtn = document.getElementById("submitBtn");
+      const originalBtnText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "소스 파일 및 의뢰서 전송 중... 잠시만 기다려주세요";
+
+      let sentSuccess = false;
+      let payload = null;
+
+      try {
+        const attachments = await readFilesAsBase64(selectedSourceFiles);
+        const shareUrl = await serializeFormState();
+        payload = collectReadableSummary(shareUrl, attachments);
+
+        if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.startsWith("https://")) {
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+          });
+          sentSuccess = true;
+        }
+      } catch (err) {
+        console.warn("자동 전송 중 네트워크 예외:", err);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+      }
+
+      if (sentSuccess) {
+        const attachNotice =
+          selectedSourceFiles.length > 0
+            ? ` (첨부하신 소스 파일 ${selectedSourceFiles.length}건도 함께 전송되었습니다.)`
+            : "";
+        showStatusModal(
+          "✅ 의뢰서 제출이 완료되었습니다!",
+          `작성하신 제작 의뢰서가 문화놀이터 공조(${COMPANY_EMAIL})로 정상 전송되었습니다.${attachNotice}`
+        );
+      } else if (payload) {
+        // 오프라인/로컬 보안 차단 시 기본 메일 클라이언트로 즉시 발송 폴백
+        const mailKeys = [
+          "제출일시",
+          "1_의뢰기관명",
+          "1_프로젝트명",
+          "1_담당자",
+          "1_연락처",
+          "1_이메일",
+          "2_촬영일시",
+          "2_촬영장소",
+          "2_예상촬영시간",
+          "2_희망납품일",
+          "2_예산범위",
+          "3_의뢰콘텐츠_수량",
+          "3_의뢰콘텐츠_상세내역",
+          "4_원본데이터필요여부",
+          "5_행사성격",
+          "5_타겟시청자",
+          "6_제공가능소스",
+          "6_초상권동의여부",
+          "6_기타요청사항",
+          "원본폼_열람_및_PDF저장_링크"
+        ];
+        const bodyLines = mailKeys.map((k) => `• ${k}: ${payload[k] || "-"}`).join("\n");
+        const mailtoUrl = `mailto:${COMPANY_EMAIL}?subject=${encodeURIComponent(payload._subject)}&body=${encodeURIComponent(bodyLines)}`;
+        window.location.href = mailtoUrl;
+        showStatusModal(
+          "📧 메일 발송 창을 열었습니다",
+          `작성하신 모든 내역이 ${COMPANY_EMAIL} 수신 메일함에 자동으로 채워졌습니다. 메일 보내기 버튼을 눌러 완료해 주세요.`
+        );
+      }
+    });
+
+    // 페이지 로드 시 URL에 원본 복원 데이터가 있으면 자동 실행
+    window.addEventListener("DOMContentLoaded", restoreFormFromUrl);
+  </script>
+</body>
+</html>
