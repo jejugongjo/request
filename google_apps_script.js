@@ -23,7 +23,8 @@ function doPost(e) {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     const data = JSON.parse(e.postData.contents);
 
-    const headers = [
+    // 기본 헤더 목록 (폼에서 _headersOrder가 넘어오지 않을 때 폴백)
+    const defaultHeaders = [
       "제출일시",
       "1_의뢰기관명",
       "1_프로젝트명",
@@ -48,11 +49,16 @@ function doPost(e) {
       "원본폼_열람_및_PDF저장_링크"
     ];
 
+    // 폼(index.html)에서 동적으로 전달받은 헤더 목록이 있으면 최우선 반영
+    const targetHeaders = Array.isArray(data._headersOrder) && data._headersOrder.length > 0
+      ? data._headersOrder
+      : defaultHeaders;
+
     // 첫 번째 행이 비어 있거나, 구버전 헤더인 경우 새 헤더로 자동 교체합니다.
-    let sheetHeaders = headers;
+    let sheetHeaders = targetHeaders;
     if (sheet.getLastRow() === 0) {
-      sheet.appendRow(headers);
-      sheet.getRange(1, 1, 1, headers.length)
+      sheet.appendRow(targetHeaders);
+      sheet.getRange(1, 1, 1, targetHeaders.length)
         .setBackground("#221E53")
         .setFontColor("#FFFFFF")
         .setFontWeight("bold");
@@ -60,7 +66,7 @@ function doPost(e) {
     } else {
       const lastCol = sheet.getLastColumn();
       const existingRow1 = lastCol > 0
-        ? sheet.getRange(1, 1, 1, lastCol).getValues()[0].filter(Boolean)
+        ? sheet.getRange(1, 1, 1, lastCol).getValues()[0].map(String).filter(Boolean)
         : [];
       const isOldHeader =
         existingRow1.indexOf("4_특수촬영요청") !== -1 ||
@@ -69,16 +75,28 @@ function doPost(e) {
         existingRow1.indexOf("7_제공가능소스") !== -1;
 
       if (sheet.getLastRow() === 1 || isOldHeader) {
-        sheet.getRange(1, 1, 1, sheet.getMaxColumns()).clearContent();
-        sheet.getRange(1, 1, 1, headers.length)
-          .setValues([headers])
+        sheet.getRange(1, 1, 1, Math.max(sheet.getMaxColumns(), targetHeaders.length)).clearContent();
+        sheet.getRange(1, 1, 1, targetHeaders.length)
+          .setValues([targetHeaders])
           .setBackground("#221E53")
           .setFontColor("#FFFFFF")
           .setFontWeight("bold");
         sheet.setFrozenRows(1);
-        sheetHeaders = headers;
-      } else if (existingRow1.length > 0) {
-        sheetHeaders = existingRow1;
+        sheetHeaders = targetHeaders;
+      } else {
+        // 이미 데이터가 쌓여있는 시트라면, 폼에 새로 추가된 열만 맨 뒤에 자동으로 덧붙여줍니다!
+        const missingHeaders = targetHeaders.filter((h) => !existingRow1.includes(h));
+        if (missingHeaders.length > 0) {
+          const startCol = existingRow1.length + 1;
+          sheet.getRange(1, startCol, 1, missingHeaders.length)
+            .setValues([missingHeaders])
+            .setBackground("#221E53")
+            .setFontColor("#FFFFFF")
+            .setFontWeight("bold");
+          sheetHeaders = existingRow1.concat(missingHeaders);
+        } else {
+          sheetHeaders = existingRow1;
+        }
       }
     }
 
@@ -134,7 +152,11 @@ function doPost(e) {
           <table style="width: 100%; border-collapse: collapse; font-size: 13.5px;">
     `;
 
-    headers.forEach((key) => {
+    const displayHeaders = Array.isArray(data._headersOrder) && data._headersOrder.length > 0
+      ? data._headersOrder
+      : sheetHeaders;
+
+    displayHeaders.forEach((key) => {
       if (key === "원본폼_열람_및_PDF저장_링크") return;
       htmlBody += `
         <tr>
